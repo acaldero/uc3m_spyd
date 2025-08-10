@@ -1,16 +1,15 @@
 # Sistemas Paralelos y Distribuidos
 
-&nbsp;&nbsp;&nbsp;
-[![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL_v2.1-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
-&nbsp;
-![Curso 2025-2026](https://img.shields.io/badge/Curso-2025_2026-red.svg)
+&nbsp;&nbsp; [![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL_v2.1-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
+&nbsp; ![Curso 2025-2026](https://img.shields.io/badge/Curso-2025_2026-red.svg)
+&nbsp; ![Curso 2025-2026](https://img.shields.io/badge/Autores-Alejandro%20Calderon%20Mateos%20y%20Felix%20Garcia%20Carballeira-brown.svg)
 
 
 ## Laboratorios complementarios
 
-* [HPC en Sistemas Distribuidos](https://github.com/acaldero/spyd/blob/main/lab_mpi/README.md)
-* [Alta Escalabilidad en Sistemas Distribuidos](https://github.com/acaldero/spyd/blob/main/lab_spark/README.md)
-* [Tolerancia a fallos](https://github.com/acaldero/spyd/blob/main/lab_checkpoint/README.md)
+* [Introducción a Computación de Altas Prestaciones](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_mpi/#readme)
+* [Introducción a Alta Escalabilidad](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_spark/#readme)
+* [Introducción a Tolerancia a Fallos](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_checkpoint/#readme)
 
 
 ## Pre-requisitos generales

@@ -1,29 +1,27 @@
 # Sistemas Paralelos y Distribuidos
 
-&nbsp;&nbsp;&nbsp;
-[![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL_v2.1-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
-&nbsp;
-![Curso 2025-2026](https://img.shields.io/badge/Curso-2025_2026-red.svg)
+&nbsp;&nbsp; [![License: LGPL v2.1](https://img.shields.io/badge/License-LGPL_v2.1-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
+&nbsp; ![Curso 2025-2026](https://img.shields.io/badge/Curso-2025_2026-red.svg)
+&nbsp; ![Curso 2025-2026](https://img.shields.io/badge/Autores-Alejandro%20Calderon%20Mateos%20y%20Felix%20Garcia%20Carballeira-brown.svg)
 
 
 ## Laboratorio sobre soporte para tolerancia a fallos en Sistemas Distribuidos
 
-1 Máquinas de trabajo:
-  * [1.1 Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](#11-pre-requisitos-para-trabajar-en-ssddx.cloud.lab.inf.uc3m.es)
-  * [1.2 Conexión SSH con las máquinas de trabajo](#11-conexion-ssh-con-las-maquinas-de-trabajo)
+ 1. Máquinas de trabajo:  
+   1.1. [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)  
+   1.2. [Conexión SSH con las máquinas de trabajo](#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
+ 3. Software necesario:  
+   2.1. [Instalación de Python](#3-instalación-de-python)
+ 4. Ejemplos para aprender:  
+   3.1. [Checkpointing](#31-checkpointing)
 
-2 Software necesario:
-  * [2.1 Instalación de Python](#21-instalacion-de-python)
 
-3 Ejemplos para aprender:
-  * [3.1 Checkpointing](#31-checkpointing)
-
-[Agradecimientos](#agradecimientos)
++ [Agradecimientos](#agradecimientos)
 
 
 ## Máquinas de trabajo
 
-### 1. Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
+### 1.1. Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
 
 Ha de disponer de:
 1. Cuenta en el Laboratorio del Departamento de Informática.
@@ -36,7 +34,7 @@ Como ayuda:
 3. La información de VPN para la Universidad está en: https://www.uc3m.es/sdic/servicios/vpn
 
 
-### 2. Conexión SSH con las máquinas de trabajo
+### 1.2. Conexión SSH con las máquinas de trabajo
 
 * Estando dentro de la Universidad para iniciar la sesión de trabajo ha de conectarse a ssddX.cloud.lab.inf.uc3m.es, siendo X = {0, 1, ... 8}:
 ```
