@@ -5,7 +5,10 @@
 &nbsp; ![Curso 2025-2026](https://img.shields.io/badge/Autores-Alejandro%20Calderon%20Mateos%20y%20Felix%20Garcia%20Carballeira-brown.svg)
 
 
-## 1. Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
+## Sistema dedicado en la nube cloud.lab.inf.uc3m.es
+
+
+### 1. Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
 
 Ha de disponer de:
 1. Cuenta en el Laboratorio del Departamento de Informática.
@@ -18,7 +21,7 @@ Como ayuda:
 3. La información de VPN para la Universidad está en: https://www.uc3m.es/sdic/servicios/vpn
 
 
-## 2. Conexión SSH con las máquinas de trabajo
+### 2. Conexión SSH con las máquinas de trabajo
 
 * Estando dentro de la Universidad para iniciar la sesión de trabajo ha de conectarse a ssddX.cloud.lab.inf.uc3m.es, siendo X = {0, 1, ... 8}:
 ```
@@ -32,4 +35,10 @@ Linux ssdd0...
 ```
 exit
 ```
+
+
+## Agradecimientos
+
+Agradecer al personal del Laboratorio del Departamento de Informática toda la ayuda prestada para la puesta en marcha de los laboratorios propuestos en las máquinas del Laboratorio del Departamento de Informática.
+
 

@@ -205,3 +205,8 @@ scancel 555
 </ol>
 
 
+## Agradecimientos
+
+Agradecer al personal del Laboratorio del Departamento de Informática toda la ayuda prestada para la puesta en marcha de los laboratorios propuestos en las máquinas del Laboratorio del Departamento de Informática.
+
+
