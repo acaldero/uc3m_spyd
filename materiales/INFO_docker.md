@@ -22,14 +22,14 @@ Como ayuda:
 
 * Para conectar al contendor X, siendo X = {0, 1, ... 8}:
 ```
-./spyd.sh start 8
-./spyd.sh bash X
+./docker.sh start 8
+./docker.sh bash X
 ...
 ```
 
 * Una vez que finalice su sesión de trabajo, ha de cerrar la sesión abierta usando el mandato exit:
 ```
 exit
-./spyd.sh stop
+./docker.sh stop
 ```
 

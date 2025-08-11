@@ -7,19 +7,23 @@
 
 ## Laboratorios complementarios
 
-* [Introducción a Computación de Altas Prestaciones](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_mpi/#readme)
-* [Introducción a Alta Escalabilidad](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_spark/#readme)
-* [Introducción a Tolerancia a Fallos](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_checkpoint/#readme)
+- :microscope: [Introducción a Computación de Altas Prestaciones](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_mpi/#readme)
+- :microscope: [Introducción a Alta Escalabilidad](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_spark/#readme)
+- :microscope: [Introducción a Tolerancia a Fallos](https://github.com/acaldero/uc3m_spyd/tree/main/materiales/lab_checkpoint/#readme)
 
 
 ## Pre-requisitos generales
 
-* Se recomienda tener acceso a, al menos, tres ordenadores interconectados entre ellos con SSH:
-  * Como ordenador vale una máquina real, una máquina virtual o un [contenedor](https://github.com/acaldero/u22-docker).
-  * Pueden ser propios o disponer de acceso remoto a los mismos.
+* Los laboratorios han sido diseñados para al menos tres ordenadores con la siguiente configuración:
+  * Hardware: Al menos 2 GiB de RAM y 28 GiB de disco duro.
+  * Software: Linux Ubuntu 22.04 LTS o compatible con acceso por SSH.
+    
+* Se recomienda tener acceso a tres ordenadores interconectados entre ellos con SSH, que pueden ser:
+  <table>
+    <tr><td>&nbsp;</td>            <td>Ordenador propio</td>                                    <td>Acceso remoto al ordenador</td></tr>
+    <tr><td>Máquina real</td>      <td>&nbsp;</td>                                              <td><a href="/materiales/INFO_cloud.md">LAB_INF</a></td></tr>
+    <tr><td>Máquina virtual</td>   <td>&nbsp;</td>                                              <td>&nbsp;</td></tr>
+    <tr><td>Contenedor</td>        <td><a href="/materiales/INFO_docker.md">Docker</a></td>     <td>&nbsp;</td></tr>
+  </table>
   
-* Para seguir los laboratorios se precisa que, en cualquier caso, los ordenadores tengan:
-  * Instalada una distribución Linux Ubuntu 22.04 LTS o compatible.
-  * Al menos 2 GiB de RAM y 24 GiB de disco duro.
-  * Acceso por SSH.
 

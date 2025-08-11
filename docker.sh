@@ -24,8 +24,8 @@
 spyd_docker_welcome ()
 {
         echo ""
-        echo "  SPyD-Docker "
-        echo " -------------"
+        echo "  Sistemas Paralelos y Distribuidos (Docker) "
+        echo " --------------------------------------------"
         echo ""
 }
 
@@ -80,8 +80,8 @@ spyd_docker_machines_create ()
         I=1
         while IFS= read -r line
         do
-          echo       "node$I" >> machines_hosts
-          echo "$line node$I" >> etc_hosts
+          echo       "node$I"        >> machines_hosts
+          echo "$line node$I nodo$I" >> etc_hosts
           I=$((I+1))
         done < machines_mpi
 
@@ -280,6 +280,7 @@ spyd_docker_start ()
                 CONTAINER_ID_LIST=$(docker ps -f name=docker -q)
                 for C in $CONTAINER_ID_LIST; do
                     docker container exec -it $C  /shared/docker/base-srv/hosts_update.sh
+                    docker container exec -it $C  ln -s /shared/materiales /home/lab/materiales
                 done
 
         fi

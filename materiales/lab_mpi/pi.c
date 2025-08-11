@@ -1,7 +1,8 @@
 /* https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html */
 
-#include "mpi.h"
+#include <stdio.h>
 #include <math.h>
+#include "mpi.h"
 
 int main(argc,argv)
 int argc;

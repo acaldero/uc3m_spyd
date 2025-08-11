@@ -46,6 +46,9 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-
         jq yamllint \
 	libjson-c-dev \
         nasm \
+        \
+        python3-pip \
+        openjdk-21-jdk \
         && \
     apt-get clean
 
@@ -83,9 +86,10 @@ RUN echo 'lab:lab' | sudo chpasswd
 # D) Home for user lab
 
 ## Populate initial home
-ADD docker/base-lab      /tmp/base-lab/
-RUN mv /tmp/base-lab/*   /home/lab
-RUN chown -R lab:lab     /home/lab
+ADD docker/base-lab          /tmp/base-lab/
+RUN mv /tmp/base-lab/*       /home/lab
+RUN ln -s /shared/materiales /home/lab/materiales
+RUN chown -R lab:lab         /home/lab
 
 ## User keygen
 USER lab
@@ -97,35 +101,12 @@ USER lab
  RUN cat /home/lab/.ssh/id_rsa.pub >> /home/lab/.ssh/authorized_keys
  RUN sudo chown -R lab:lab /home/lab
 
-## Default workdir
-WORKDIR "/home/lab"
 
+# E) Laboratories: MPI + Apache Spark
 
-# E) Laboratories
-
-## Install MPI + Apache Spark
-USER root
-RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
-        \
-        python3-pip \
-        \
-        openjdk-8-jdk \
-        \
-        libmpich-dev libmpich12 mpich mpich-doc \
-        && \
-    apt-get clean
-RUN pip3 install py4j --break-system-packages
-
-## Download and install Spark
 USER lab
-RUN wget https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz  -O /tmp/spark-4.0.0-bin-hadoop3.tgz
-RUN mv  /tmp/spark-4.0.0-bin-hadoop3.tgz  /home/lab/spark-4.0.0-bin-hadoop3.tgz
-RUN tar zxf /home/lab/spark-4.0.0-bin-hadoop3.tgz -C /home/lab/
-RUN mv /home/lab/spark-4.0.0-bin-hadoop3             /home/lab/spark
-
-## Update PATH
-RUN echo "# Spark"                                    >> /home/lab/.profile
-RUN echo "export PATH=/home/lab/src/spark/bin:\$PATH" >> /home/lab/.profile
+RUN /home/lab/bin/install-mpich.sh
+RUN /home/lab/bin/install-spark.sh /home/lab/
 
 
 # F) Container start-up
@@ -135,6 +116,7 @@ RUN mkdir -p /srv
 
 ADD  docker/base-srv     /tmp/base-srv/
 RUN mv /tmp/base-srv/*   /srv
+WORKDIR /home/lab
 
 EXPOSE 22
 CMD ["/srv/dockerstart.sh"]
