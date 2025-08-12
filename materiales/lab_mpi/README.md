@@ -7,81 +7,44 @@
 
 ## Laboratorio de HPC en Sistemas Distribuidos
 
-1 Máquinas de trabajo:
-  * [1.1 Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
-  * [1.2 Conexión SSH con las máquinas de trabajo](#12-conexión-ssh-con-las-máquinas-de-trabajo)
+* Máquinas de trabajo:
+  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
+    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
+  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
+    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
 
-2 Software necesario:
-  * [2.1 Instalación del paquete de desarrollo](#21-instalación-del-paquete-de-desarrollo)
-  * [2.2 Instalación de MPI](#22-instalación-de-mpi)
+* Software necesario:
+  * [Instalación del paquete de desarrollo](#instalación-del-paquete-de-desarrollo)
+  * [Instalación de MPI](#instalación-de-mpi)
 
-3 Ejemplos para aprender:
-  * [3.1 Hola mundo en MPI](#31-hola-mundo-en-mpi)
-  * [3.2 Send y Receive en MPI](#32-send-y-receive-en-mpi)
-  * [3.3 Cálculo de PI en MPI](#33-cálculo-de-pi-en-mpi)
+* Ejemplos para aprender:
+  * [Hola mundo en MPI](#hola-mundo-en-mpi)
+  * [Send y Receive en MPI](#send-y-receive-en-mpi)
+  * [Cálculo de PI en MPI](#cálculo-de-pi-en-mpi)
 
 [Agradecimientos](#agradecimientos)
 
 
+## Software necesario
 
-## 1 Máquinas de trabajo
+### Instalación del paquete de desarrollo
 
-### 1.1 Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
-
-Ha de disponer de:
-1. Cuenta en el Laboratorio del Departamento de Informática.
-2. El software MobaXterm (o similar).
-3. Estar conectado dentro de la red de la Universidad, ya sea con VPN o con conexión a través de guernika.lab.inf.uc3m.es.
-
-Como ayuda:
-1. Para solicitar la apertura de cuenta siga los pasos indicados en: https://www.lab.inf.uc3m.es/servicios/apertura-de-cuenta/
-2. El Laboratorio del Departamento de Informática dispone de un manual de MobaXterm en: https://www.lab.inf.uc3m.es/wp-content/docs/Manual_ConexionSSH.pdf
-3. La información de VPN para la Universidad está en: https://www.uc3m.es/sdic/servicios/vpn
-
-### 1.2 Conexión SSH con las máquinas de trabajo
-
-* Estando dentro de la Universidad para iniciar la sesión de trabajo ha de conectarse a ssddX.cloud.lab.inf.uc3m.es, siendo X = {0, 1, ... 8}:
+Instalar compilador, depurador y software adicional de apoyo:
 ```
-ssh  lab@ssdd0.cloud.lab.inf.uc3m.es
-lab@ssdd0.lab.inf.uc3m.es's password: <clave que no se mostrará cuando escriba>
-Linux ssdd0...
-...
+sudo apt-get install -y build-essential autoconf automake libtool m4 gdb ddd valgrind cgdb
 ```
 
-* Una vez que finalice su sesión de trabajo, ha de cerrar cada conexión abierta usando el mandato exit:
-```
-exit
-```
-
-
-## 2 Software necesario
-
-### 2.1 Instalación del paquete de desarrollo
-
-Instalar compilador y depurador:
-```
-sudo apt-get install build-essential autoconf automake libtool m4
-```
-
-Instalar software adicional de apoyo:
-```
-sudo apt-get install gdb ddd valgrind cgdb
-```
-
-### 2.2 Instalación de MPI
+### Instalación de MPI
 
 Instalar una implementación de MPI:
 ```
-sudo apt-get install mpich libmpich-dev libmpich12 
-```
-
-Instalar software adicional de apoyo:
-```
-sudo apt-get install valgrind-mpi 
+sudo apt-get install -y mpich libmpich-dev libmpich12 valgrind-mpi 
 ```
 
 
-## 3 Ejemplos para aprender
+## Ejemplos para aprender
 
 Se parte de un archivo fuente vacío y el ciclo de trabajo típico es un bucle con los siguientes pasos en cada iteración:
 
@@ -96,7 +59,7 @@ Se parte de un archivo fuente vacío y el ciclo de trabajo típico es un bucle c
    * Eliminar errores de ejecución.
 
 
-### 3.1 Hola mundo en MPI
+### Hola mundo en MPI
 
 #### 1. Editar "hola mundo" en MPI
 
@@ -142,7 +105,7 @@ mpicc -g -Wall -o hola hola.o
 ```
 
 
-#### 3. Ejecutar en nodo local
+#### 3.A Ejecutar en nodo local
 
 Para ejecutar en la máquina local hay que hacer dos pasos:
    * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
@@ -162,7 +125,7 @@ Hola mundo desde 'master' (rank 1 de 2)
 Hola mundo desde 'master' (rank 0 de 2)
 ```
 
-#### 4. Ejecutar en nodos remotos
+#### 3.B Ejecutar en nodos remotos
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
   * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
@@ -192,7 +155,7 @@ Hola mundo desde 'nodo1' (rank 2 de 4)
 ```
 
 
-### 3.2 Send y Receive en MPI
+### Send y Receive en MPI
 
 #### 1. Editar
 
@@ -256,7 +219,7 @@ La salida será:
 Porque en la ejecución correcta del programa no se imprime nada.
 
 
-### 3.3 Cálculo de PI en MPI
+### Cálculo de PI en MPI
 
 #### 1. Editar
 
@@ -362,10 +325,5 @@ Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en al
 * [mpi_hola.c](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-hello-world/code)
 * [pi.c](https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html)
 * [llamadas colectivas](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-broadcast-and-collective-communication)
-
-
-## Agradecimientos
-
-Por último pero no por ello menos importante, agradecer al personal del Laboratorio del Departamento de Informática toda la ayuda prestada para que este laboratorio sea posible.
 
 

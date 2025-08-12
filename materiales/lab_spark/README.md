@@ -7,61 +7,29 @@
 
 ## Laboratorio sobre Alta Escalabilidad en Sistemas Distribuidos
 
-1 Máquinas de trabajo:
-  * [1.1 Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
-  * [1.2 Conexión SSH con las máquinas de trabajo](#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
+* Máquinas de trabajo:
+  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
+    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
+  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
+    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
 
-2 Software necesario:
-  * [2.1 Instalación de Python](#21-instalaci%C3%B3n-de-python-y-pip) 
-  * [2.2 Instalación de Apache Spark](#22-instalaci%C3%B3n-de-apache-spark)
+* Software necesario:
+  * [Instalación de Python](#instalaci%C3%B3n-de-python-y-pip) 
+  * [Instalación de Apache Spark](#instalaci%C3%B3n-de-apache-spark)
 
-3 Ejemplos para aprender:
-  * [3.1 Apache Spark en nodo autónomo y shell interactivo](#31-apache-spark-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
-  * [3.2 Ejemplo: cálculo de pi en nodo autónomo y shell interactivo](#32-ejemplo-c%C3%A1lculo-de-pi-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
-  * [3.3 Ejemplo: contar ocurrencias de palabras en fichero autónomo y shell interactivo](#33-ejemplo-contar-ocurrencias-de-palabras-en-fichero-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
-  * [3.4 Ejemplo: uso de jupyter notebook](#34-ejemplo-uso-de-jupyter-notebook)
-  * [3.5 Ejemplo: uso de jupyter notebook con cluster](#35-ejemplo-uso-de-jupyter-notebook-con-cluster)
-
-[Agradecimientos](#agradecimientos)
-
-
-## Máquinas de trabajo
-
-### 1.1 Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
-
-* Ha de disponer de:
-  1. Cuenta en el Laboratorio del Departamento de Informática.
-  2. El software MobaXterm (o similar).
-  3. Estar conectado dentro de la red de la Universidad, ya sea con VPN o con conexión a través de guernika.lab.inf.uc3m.es.
-
-* Como ayuda:
-  1. Para solicitar la apertura de cuenta siga los pasos indicados en:  
-     https://www.lab.inf.uc3m.es/servicios/apertura-de-cuenta/
-  3. El Laboratorio del Departamento de Informática dispone de un manual de MobaXterm en:  
-     https://www.lab.inf.uc3m.es/wp-content/docs/Manual_ConexionSSH.pdf
-  5. La información de VPN para la Universidad está en:  
-     https://www.uc3m.es/sdic/servicios/vpn
-
-
-### 1.2 Conexión SSH con las máquinas de trabajo
-
-* Estando dentro de la Universidad para iniciar la sesión de trabajo ha de conectarse a ssddX.cloud.lab.inf.uc3m.es, siendo X = {0, 1, ... 9}:
-  ```
-  ssh  lab@ssdd0.cloud.lab.inf.uc3m.es
-  lab@ssdd0.lab.inf.uc3m.es's password: <clave que no se mostrará cuando escriba>
-  Linux ssdd0...
-  ...
-  ```
-
-* Una vez que finalice su sesión de trabajo, ha de cerrar cada conexión abierta usando el mandato **exit**:
-  ```
-  exit
-  ```
+* Ejemplos para aprender:
+  * [Apache Spark en nodo autónomo y shell interactivo](#apache-spark-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
+  * [Ejemplo: cálculo de pi en nodo autónomo y shell interactivo](#ejemplo-c%C3%A1lculo-de-pi-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
+  * [Ejemplo: contar ocurrencias de palabras en fichero autónomo y shell interactivo](#ejemplo-contar-ocurrencias-de-palabras-en-fichero-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
+  * [Ejemplo: uso de jupyter notebook](#ejemplo-uso-de-jupyter-notebook)
+  * [Ejemplo: uso de jupyter notebook con cluster](#ejemplo-uso-de-jupyter-notebook-con-cluster)
 
 
 ## Software necesario
 
-### 2.1 Instalación de Python (y PIP)  
+### Instalación de Python (y PIP)  
 
 *  
   <html>
@@ -91,8 +59,7 @@
   </html>
 
 
-
-### 2.2 Instalación de Apache Spark
+### Instalación de Apache Spark
 
 * Para instalar las dependencias puede ejecutar:
   ```
@@ -102,9 +69,9 @@
 * Para instalar Apache Spark en su cuenta personal puede ejecutar:
   ```
   cd $HOME
-  wget https://dlcdn.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz
-  tar zxf spark-3.5.3-bin-hadoop3.tgz
-  ln   -s spark-3.5.3-bin-hadoop3  spark
+  wget https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz
+  tar zxf spark-4.0.0-bin-hadoop3.tgz
+  ln   -s spark-4.0.0-bin-hadoop3  spark
   ```
 
 * Después de instalar, hay que configurar dos variables de entorno para usar Apache Spark:
@@ -120,32 +87,32 @@
   
 * Debería de ver una salida como la siguiente:
   ```
-  24/10/20 12:18:30 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform...
+  24/10/24 12:18:30 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform...
   ...
-  24/10/20 12:18:32 INFO SparkContext: Starting job: reduce at SparkPi.scala:38
-  24/10/20 12:18:32 INFO DAGScheduler: Got job 0 (reduce at SparkPi.scala:38) with 5 output partitions
+  24/10/24 12:18:32 INFO SparkContext: Starting job: reduce at SparkPi.scala:38
+  24/10/24 12:18:32 INFO DAGScheduler: Got job 0 (reduce at SparkPi.scala:38) with 5 output partitions
   ...
-  24/10/20 12:18:32 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
-  24/10/20 12:18:32 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
-  24/10/20 12:18:32 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:38, took 0.458716 s
+  24/10/24 12:18:32 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
+  24/10/24 12:18:32 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+  24/10/24 12:18:32 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:38, took 0.458716 s
   Pi is roughly 3.143406286812574
-  24/10/20 12:18:32 INFO SparkContext: SparkContext is stopping with exitCode 0.
-  24/10/20 12:18:32 INFO SparkUI: Stopped Spark web UI at http://master:4040
-  24/10/20 12:18:33 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
-  24/10/20 12:18:33 INFO MemoryStore: MemoryStore cleared
-  24/10/20 12:18:33 INFO BlockManager: BlockManager stopped
-  24/10/20 12:18:33 INFO BlockManagerMaster: BlockManagerMaster stopped
-  24/10/20 12:18:33 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
-  24/10/20 12:18:33 INFO SparkContext: Successfully stopped SparkContext
-  24/10/20 12:18:33 INFO ShutdownHookManager: Shutdown hook called
-  24/10/20 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-aa764165-433d-4601-9365-ee5c1b6c5b82
-  24/10/20 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-0bc7c845-d7ac-43c7-874a-1e8bdb86a92d
+  24/10/24 12:18:32 INFO SparkContext: SparkContext is stopping with exitCode 0.
+  24/10/24 12:18:32 INFO SparkUI: Stopped Spark web UI at http://master:4040
+  24/10/24 12:18:33 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+  24/10/24 12:18:33 INFO MemoryStore: MemoryStore cleared
+  24/10/24 12:18:33 INFO BlockManager: BlockManager stopped
+  24/10/24 12:18:33 INFO BlockManagerMaster: BlockManagerMaster stopped
+  24/10/24 12:18:33 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+  24/10/24 12:18:33 INFO SparkContext: Successfully stopped SparkContext
+  24/10/24 12:18:33 INFO ShutdownHookManager: Shutdown hook called
+  24/10/24 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-aa764165-433d-4601-9365-ee5c1b6c5b82
+  24/10/24 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-0bc7c845-d7ac-43c7-874a-1e8bdb86a92d
   ```
 
 
 ## Ejemplos para aprender
 
-### 3.1 Apache Spark en nodo autónomo y shell interactivo
+### Apache Spark en nodo autónomo y shell interactivo
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
   ```
@@ -185,7 +152,7 @@
   También el caracter "final de fichero" (con las teclas control y D) debería de permitir finalizar la sesión con Apache Spark.
 
 
-### 3.2 Ejemplo: cálculo de pi en nodo autónomo y shell interactivo
+### Ejemplo: cálculo de pi en nodo autónomo y shell interactivo
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
   ```
@@ -243,7 +210,7 @@
   ```
 
 
-### 3.3 Ejemplo: contar ocurrencias de palabras en fichero en nodo autónomo y shell interactivo
+### Ejemplo: contar ocurrencias de palabras en fichero en nodo autónomo y shell interactivo
 
 * Usaremos el quijote en texto plano para trabajar ([pg2000.txt](https://www.gutenberg.org/files/2000/2000-0.txt)) para lo que usaremos:
   ```
@@ -308,7 +275,7 @@
   ```
 
 
-### 3.4 Ejemplo: uso de jupyter notebook
+### Ejemplo: uso de jupyter notebook
 
 * Debemos configurar pyspark para que use jupyter y notebook:
   ```
@@ -362,7 +329,7 @@
   ![image](jn07-pywc-remote-2.png)
 
 
-### 3.5 Ejemplo: uso de jupyter notebook con cluster
+### Ejemplo: uso de jupyter notebook con cluster
 
 * Se configura los workers de Spark:
   ```
@@ -433,8 +400,4 @@
 * [Ejemplos iniciales de uso de Spark](https://spark.apache.org/examples.html)
 * [Ejemplos en python](https://github.com/apache/spark/tree/master/examples/src/main/python)
 
-
-## Agradecimientos
-
-Por último pero no por ello menos importante, agradecer al personal del Laboratorio del Departamento de Informática toda la ayuda prestada para que este laboratorio sea posible.
 

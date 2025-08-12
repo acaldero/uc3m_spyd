@@ -7,53 +7,25 @@
 
 ## Laboratorio sobre soporte para tolerancia a fallos en Sistemas Distribuidos
 
- 1. Máquinas de trabajo:  
-   1.1. [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)  
-   1.2. [Conexión SSH con las máquinas de trabajo](#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
- 3. Software necesario:  
-   2.1. [Instalación de Python](#3-instalación-de-python)
- 4. Ejemplos para aprender:  
-   3.1. [Checkpointing](#31-checkpointing)
+* Máquinas de trabajo:
+  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
+    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
+  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
+    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
+    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
 
+* Software necesario:
+  * [Instalación de Python](#3-instalación-de-python)
 
-+ [Agradecimientos](#agradecimientos)
+* Ejemplos para aprender:
+  * [Checkpointing](#31-checkpointing)
 
-
-## Máquinas de trabajo
-
-### 1.1. Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es
-
-Ha de disponer de:
-1. Cuenta en el Laboratorio del Departamento de Informática.
-2. El software MobaXterm (o similar).
-3. Estar conectado dentro de la red de la Universidad, ya sea con VPN o con conexión a través de guernika.lab.inf.uc3m.es.
-
-Como ayuda:
-1. Para solicitar la apertura de cuenta siga los pasos indicados en: https://www.lab.inf.uc3m.es/servicios/apertura-de-cuenta/
-2. El Laboratorio del Departamento de Informática dispone de un manual de MobaXterm en: https://www.lab.inf.uc3m.es/wp-content/docs/Manual_ConexionSSH.pdf
-3. La información de VPN para la Universidad está en: https://www.uc3m.es/sdic/servicios/vpn
-
-
-### 1.2. Conexión SSH con las máquinas de trabajo
-
-* Estando dentro de la Universidad para iniciar la sesión de trabajo ha de conectarse a ssddX.cloud.lab.inf.uc3m.es, siendo X = {0, 1, ... 8}:
-```
-ssh  lab@ssdd0.cloud.lab.inf.uc3m.es
-lab@ssdd0.lab.inf.uc3m.es's password: <clave que no se mostrará cuando escriba>
-Linux ssdd0...
-...
-```
-
-* Una vez que finalice su sesión de trabajo, ha de cerrar cada conexión abierta usando el mandato exit:
-```
-exit
-```
 
 
 ## Software necesario
 
-### 3. Instalación de Python
-
+### Instalación de Python
 
 <html>
 <table>
@@ -93,14 +65,14 @@ No obstante para los ejemplos se usará PIP.
 
 ## Ejemplos para aprender
 
-### 3.1 Checkpointing
+### Checkpointing
 
 #### Preparación
 
-Si no tiene el directorio *lab_checkpoint* entonces se puede ejecutar:
+Si no tiene el directorio *lab_checkpoint* entonces precisa ejecutar:
 ```
-git clone https://github.com/acaldero/uc3m_ssdd.git
-cd uc3m_ssdd/
+git clone https://github.com/acaldero/uc3m_spyd.git
+cd uc3m_spyd/materiales
 ```
 Si tiene el directorio *lab_checkpoint* entonces hay que introducir:
 ```
@@ -155,8 +127,4 @@ iter:  9
 </table>
 </html>
 
-
-## Agradecimientos
-
-Por último pero no por ello menos importante, agradecer al personal del Laboratorio del Departamento de Informática toda la ayuda prestada para que este laboratorio sea posible.
 

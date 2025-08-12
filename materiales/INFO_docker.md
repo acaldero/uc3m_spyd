@@ -11,25 +11,36 @@
 ### 1. Pre-requisitos para trabajar con contenedores
 
 Ha de disponer de:
-1. Instalar Docker Desktop en su ordenador.
-2. Ha de usar el contenedor facilitado en el repositorio.
-
-Como ayuda:
-1. Para instalar Docker Desktop siga los pasos en: https://www.docker.com/products/docker-desktop/
+1. Instalar Docker Desktop en su ordenador ([linux](https://docs.docker.com/desktop/setup/install/linux/), [windows](https://docs.docker.com/desktop/setup/install/windows-install/) or [mac](https://docs.docker.com/desktop/setup/install/mac-install/)).
+   * Para instalar Docker Desktop siga los pasos en: https://www.docker.com/products/docker-desktop/
+   * Disponible para [linux](https://docs.docker.com/desktop/setup/install/linux/), [windows](https://docs.docker.com/desktop/setup/install/windows-install/) or [mac](https://docs.docker.com/desktop/setup/install/mac-install/).
+2. Puede usar la configuración facilitada en el repositorio.
+   * Ha de construir la imagen del contenedor usando:
+   ```
+   ./docker.sh build
+   ```
 
 
 ### 2. Conexión SSH con las máquinas de trabajo
 
-* Para conectar al contendor X, siendo X = {0, 1, ... 8}:
-```
-./docker.sh start 8
-./docker.sh bash X
-...
-```
+* Ha de crear al menos 3 contenedores a partir de la imagen usando:
+  ```
+  ./docker.sh start 3
+  ```
+
+* Para conectar al contendor X, siendo X = {1, ... 3}, y trabajar en el:
+  ```
+  ./docker.sh bash X
+  ...
+  ```
 
 * Una vez que finalice su sesión de trabajo, ha de cerrar la sesión abierta usando el mandato exit:
-```
-exit
-./docker.sh stop
-```
+  ```
+  exit
+  ```
+
+* Para parar los contenedores creados ha de usar:
+  ```
+  ./docker.sh stop
+  ```
 
