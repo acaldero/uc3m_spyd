@@ -21,9 +21,9 @@
 * Se recomienda tener acceso a tres ordenadores interconectados entre ellos con SSH, que pueden ser:
   <table>
     <tr><td>&nbsp;</td>            <td>Ordenador propio</td>                                    <td>Acceso remoto a laboratorio</td></tr>
-    <tr><td>Máquina real</td>      <td>&nbsp;</td>                                              <td><a href="/materiales/INFO_cloud.md">LAB_INF</a></td></tr>
+    <tr><td>Máquina real</td>      <td>&nbsp;</td>                                              <td><a href="/materiales/ENV_cloud.md">LAB_INF</a></td></tr>
     <tr><td>Máquina virtual</td>   <td>&nbsp;</td>                                              <td>&nbsp;</td></tr>
-    <tr><td>Contenedor</td>        <td><a href="/materiales/INFO_docker.md">Docker</a></td>     <td>&nbsp;</td></tr>
+    <tr><td>Contenedor</td>        <td><a href="/materiales/ENV_docker.md">Docker</a></td>     <td>&nbsp;</td></tr>
   </table>
   
 

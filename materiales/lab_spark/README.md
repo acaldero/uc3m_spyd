@@ -8,106 +8,16 @@
 ## Laboratorio sobre Alta Escalabilidad en Sistemas Distribuidos
 
 * Máquinas de trabajo:
-  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
-    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
-    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-
+  * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
+  * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
 * Software necesario:
-  * [Instalación de Python](#instalaci%C3%B3n-de-python-y-pip) 
-  * [Instalación de Apache Spark](#instalaci%C3%B3n-de-apache-spark)
-
+  * [Instalación de Apache Spark](/materiales/SW_spark.md)
 * Ejemplos para aprender:
   * [Apache Spark en nodo autónomo y shell interactivo](#apache-spark-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
   * [Ejemplo: cálculo de pi en nodo autónomo y shell interactivo](#ejemplo-c%C3%A1lculo-de-pi-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
   * [Ejemplo: contar ocurrencias de palabras en fichero autónomo y shell interactivo](#ejemplo-contar-ocurrencias-de-palabras-en-fichero-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
   * [Ejemplo: uso de jupyter notebook](#ejemplo-uso-de-jupyter-notebook)
   * [Ejemplo: uso de jupyter notebook con cluster](#ejemplo-uso-de-jupyter-notebook-con-cluster)
-
-
-## Software necesario
-
-### Instalación de Python (y PIP)  
-
-*  
-  <html>
-  <table>
-  <tr>
-  <td>Paso</td>
-  <td>Mandato</td>
-  </tr>
-  <tr>
-  <td>Instalar Python3</td>
-  <td>
-  <small><pre>
-  sudo apt-get install python3-minimal python3-pip
-  sudo pip install py4j
-  </pre></small>
-  </td>
-  </tr>
-  <tr>
-  <td>Instalar soporte para jupyter</td>
-  <td><pre>sudo apt-get install jupyter-notebook</pre></td>
-  </tr>
-  <tr>
-  <td>Prueba básica</td>
-  <td colspan="1"><pre>jupyter notebook</pre></td>
-  </tr>
-  </table>
-  </html>
-
-
-### Instalación de Apache Spark
-
-* Para instalar las dependencias puede ejecutar:
-  ```
-  sudo apt-get install ssh rsync default-jdk
-  ```
-
-* Para instalar Apache Spark en su cuenta personal puede ejecutar:
-  ```
-  cd $HOME
-  wget https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz
-  tar zxf spark-4.0.0-bin-hadoop3.tgz
-  ln   -s spark-4.0.0-bin-hadoop3  spark
-  ```
-
-* Después de instalar, hay que configurar dos variables de entorno para usar Apache Spark:
-  ```
-  export SPARK_HOME=$HOME/spark
-  export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
-  ```
-
-* La prueba básica de que funciona la instalación es:
-  ```
-  ./spark/bin/run-example SparkPi 5
-  ```
-  
-* Debería de ver una salida como la siguiente:
-  ```
-  24/10/24 12:18:30 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform...
-  ...
-  24/10/24 12:18:32 INFO SparkContext: Starting job: reduce at SparkPi.scala:38
-  24/10/24 12:18:32 INFO DAGScheduler: Got job 0 (reduce at SparkPi.scala:38) with 5 output partitions
-  ...
-  24/10/24 12:18:32 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
-  24/10/24 12:18:32 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
-  24/10/24 12:18:32 INFO DAGScheduler: Job 0 finished: reduce at SparkPi.scala:38, took 0.458716 s
-  Pi is roughly 3.143406286812574
-  24/10/24 12:18:32 INFO SparkContext: SparkContext is stopping with exitCode 0.
-  24/10/24 12:18:32 INFO SparkUI: Stopped Spark web UI at http://master:4040
-  24/10/24 12:18:33 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
-  24/10/24 12:18:33 INFO MemoryStore: MemoryStore cleared
-  24/10/24 12:18:33 INFO BlockManager: BlockManager stopped
-  24/10/24 12:18:33 INFO BlockManagerMaster: BlockManagerMaster stopped
-  24/10/24 12:18:33 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
-  24/10/24 12:18:33 INFO SparkContext: Successfully stopped SparkContext
-  24/10/24 12:18:33 INFO ShutdownHookManager: Shutdown hook called
-  24/10/24 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-aa764165-433d-4601-9365-ee5c1b6c5b82
-  24/10/24 12:18:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-0bc7c845-d7ac-43c7-874a-1e8bdb86a92d
-  ```
 
 
 ## Ejemplos para aprender
@@ -311,22 +221,22 @@
   ```
 
 * Una vez conectados+as estaremos en la página inicial:  
-  ![Image](jn01-intro.png)
+  ![Image](jnb/jnb01-intro.png)
 
 * En la página inicial procederemos a crear un nuevo notebook:  
-  ![image](jn02-new-notebook.png)
+  ![image](jnb/jnb02-new-notebook.png)
   
 * En el nuevo libro tendremos una nueva celda:  
-  ![image](jn03-new-cell.png)
+  ![image](jnb/jnb03-new-cell.png)
   
 * En la celda podemos copiar el ejemplo de PI (y ejecutarlo):  
-  ![image](jn04-pi.png)
+  ![image](jnb/jnb04-pi.png)
   
 * En una nueva celda podemos copiar el ejemplo de contar el número de palabras en local (y ejecutarlo):  
-  ![image](jn05-pywc-local.png)
+  ![image](jnb/jnb05-pywc-local.png)
   
 * En una nueva celda podemos copiar el ejemplo de contar el número de palabras en remoto (y ejecutarlo):  
-  ![image](jn07-pywc-remote-2.png)
+  ![image](jnb/jnb07-pywc-remote-2.png)
 
 
 ### Ejemplo: uso de jupyter notebook con cluster

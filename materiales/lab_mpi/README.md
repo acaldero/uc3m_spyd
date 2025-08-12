@@ -8,40 +8,14 @@
 ## Laboratorio de HPC en Sistemas Distribuidos
 
 * Máquinas de trabajo:
-  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
-    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
-    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-
+  * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
+  * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
 * Software necesario:
-  * [Instalación del paquete de desarrollo](#instalación-del-paquete-de-desarrollo)
-  * [Instalación de MPI](#instalación-de-mpi)
-
+  * [Instalación de MPI](/materiales/SW_mpi.md)
 * Ejemplos para aprender:
   * [Hola mundo en MPI](#hola-mundo-en-mpi)
   * [Send y Receive en MPI](#send-y-receive-en-mpi)
   * [Cálculo de PI en MPI](#cálculo-de-pi-en-mpi)
-
-[Agradecimientos](#agradecimientos)
-
-
-## Software necesario
-
-### Instalación del paquete de desarrollo
-
-Instalar compilador, depurador y software adicional de apoyo:
-```
-sudo apt-get install -y build-essential autoconf automake libtool m4 gdb ddd valgrind cgdb
-```
-
-### Instalación de MPI
-
-Instalar una implementación de MPI:
-```
-sudo apt-get install -y mpich libmpich-dev libmpich12 valgrind-mpi 
-```
 
 
 ## Ejemplos para aprender

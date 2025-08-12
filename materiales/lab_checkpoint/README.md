@@ -8,66 +8,20 @@
 ## Laboratorio sobre soporte para tolerancia a fallos en Sistemas Distribuidos
 
 * Máquinas de trabajo:
-  * [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_cloud.md)
-    * [Pre-requisitos para trabajar en ssddX.cloud.lab.inf.uc3m.es](/materiales/INFO_cloud.md#11-pre-requisitos-para-trabajar-en-ssddxcloudlabinfuc3mes)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_cloud.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-  * [Sistema propio usando contenedores docker](https://github.com/acaldero/uc3m_spyd/blob/main/materiales/INFO_docker.md)
-    * [Pre-requisitos para trabajar con contenedores](/materiales/INFO_docker.md#11-pre-requisitos-para-trabajar-con-contenedores)
-    * [Conexión SSH con las máquinas de trabajo](/materiales/INFO_docker.md#12-conexi%C3%B3n-ssh-con-las-m%C3%A1quinas-de-trabajo)
-
+  * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
+  * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
 * Software necesario:
-  * [Instalación de Python](#3-instalación-de-python)
-
-* Ejemplos para aprender:
-  * [Checkpointing](#31-checkpointing)
-
+  * [Instalación de Python](/materiales/SW_python.md)
+* Ejemplo para aprender:
+  * [Checkpointing](#checkpointing)
 
 
-## Software necesario
 
-### Instalación de Python
-
-<html>
-<table>
-
-<tr>
-<td></td>
-<td>Uso de PIP</td>
-<td>Uso de Anaconda</td>
-</tr>
-
-<tr>
-<td>Instalar Python3</td>
-<td>
-<small><pre>
-sudo apt-get install \
-     python3-minimal python3-pip
-</pre></small>
-</td>
-<td>
-<pre>
-wget <sub>https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh</sub>
-chmod a+x Anaconda3-2023.09-0-Linux-x86_64.sh
-./Anaconda3-2023.09-0-Linux-x86_64.sh -b
-source ~/.profile
-conda update --all
-conda clean  --all
-</pre>
-</td>
-</tr>
-
-</table>
-</html>
-
-
-No obstante para los ejemplos se usará PIP.
-
-
-## Ejemplos para aprender
+## Ejemplo para aprender
 
 ### Checkpointing
 
-#### Preparación
+#### 1. Preparación
 
 Si no tiene el directorio *lab_checkpoint* entonces precisa ejecutar:
 ```
@@ -81,12 +35,12 @@ chmod a+x *.sh
 ```
 
 
-#### Ejecutar el ejemplo
+#### 2. Ejecutar el ejemplo
 
+* La primera vez que se ejecuta el cliente, se realiza un número indeterminado de iteraciones hasta que falla la ejecución:
 <html>
 <table>
 <tr><th>Paso</th><th>Cliente</th></tr>
-
 <tr>
 <td>1</td>
 <td>
@@ -104,7 +58,14 @@ iter:  4
 
 </td>
 </tr>
+</table>
+</html>
 
+
+* Gracias a guardar un punto de recuperación (*checkpoint*) la segunda vez que se ejecuta se continua la ejecución hasta el siguiente fallo (o finalización del programa sin fallo):
+<html>
+<table>
+<tr><th>Paso</th><th>Cliente</th></tr>
 <tr>
 <td>2</td>
 <td>
@@ -123,7 +84,6 @@ iter:  9
 
 </td>
 </tr>
-
 </table>
 </html>
 
