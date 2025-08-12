@@ -22,15 +22,13 @@
 
 Se parte de un archivo fuente vacío y el ciclo de trabajo típico es un bucle con los siguientes pasos en cada iteración:
 
- 1 Editar el archivo fuente para añadir funcionalidad.
-   * Anotar como comentario lo que se quiere hacer
-   * Después de cada comentario añadir el código fuente asociado.
-
- 2 Compilar el archivo fuente a binario.
-   * Eliminar errores de compilación.
-
- 3 Ejecutar el archivo binario.
-   * Eliminar errores de ejecución.
+ 1. Editar el archivo fuente para añadir funcionalidad.
+    * Anotar como comentario lo que se quiere hacer
+    * Después de cada comentario añadir el código fuente asociado.
+ 2. Compilar el archivo fuente a binario.
+    * Eliminar errores de compilación.
+ 3. Ejecutar el archivo binario.
+    * Eliminar errores de ejecución.
 
 
 ### Hola mundo en MPI
@@ -82,51 +80,51 @@ mpicc -g -Wall -o hola hola.o
 #### 3.A Ejecutar en nodo local
 
 Para ejecutar en la máquina local hay que hacer dos pasos:
-   * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-``` bash
-cat <<EOF > machines
-localhost
-localhost
-EOF
-```
+  * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
+    ``` bash
+    cat <<EOF > machines
+    localhost
+    localhost
+    EOF
+    ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
-``` bash
-mpirun -np 2 -machinefile machines ./hola
-```
-La salida podría ser:
-``` bash
-Hola mundo desde 'master' (rank 1 de 2)
-Hola mundo desde 'master' (rank 0 de 2)
-```
+    ``` bash
+    mpirun -np 2 -machinefile machines ./hola
+    ```
+    La salida podría ser:
+    ``` bash
+    Hola mundo desde 'master' (rank 1 de 2)
+    Hola mundo desde 'master' (rank 0 de 2)
+    ```
 
 #### 3.B Ejecutar en nodos remotos
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
   * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-``` bash
-cat <<EOF > machines
-nodo1
-nodo2
-EOF
-```
+    ``` bash
+    cat <<EOF > machines
+    nodo1
+    nodo2
+    EOF
+    ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-``` bash
-ssh nodo1 mkdir -p ~/lab_mpi
-ssh nodo2 mkdir -p ~/lab_mpi
-scp hola nodo1:~/lab_mpi/hola
-scp hola nodo2:~/lab_mpi/hola
-```
+    ``` bash
+    ssh nodo1 mkdir -p ~/lab_mpi
+    ssh nodo2 mkdir -p ~/lab_mpi
+    scp hola nodo1:~/lab_mpi/hola
+    scp hola nodo2:~/lab_mpi/hola
+    ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
-``` bash
-mpirun -np 4 -machinefile machines ~/lab_mpi/hola
-```
-La salida podría ser:
-``` bash
-Hola mundo desde 'nodo2' (rank 3 de 4)
-Hola mundo desde 'nodo1' (rank 0 de 4)
-Hola mundo desde 'nodo2' (rank 1 de 4)
-Hola mundo desde 'nodo1' (rank 2 de 4)
-```
+    ``` bash
+    mpirun -np 4 -machinefile machines ~/lab_mpi/hola
+    ```
+    La salida podría ser:
+    ``` bash
+    Hola mundo desde 'nodo2' (rank 3 de 4)
+    Hola mundo desde 'nodo1' (rank 0 de 4)
+    Hola mundo desde 'nodo2' (rank 1 de 4)
+    Hola mundo desde 'nodo1' (rank 2 de 4)
+    ```
 
 
 ### Send y Receive en MPI
@@ -172,25 +170,25 @@ mpicc -o s-r s-r.c -lm
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
   * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-``` bash
-cat <<EOF > machines
-nodo1
-nodo2
-EOF
-```
+    ``` bash
+    cat <<EOF > machines
+    nodo1
+    nodo2
+    EOF
+    ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-``` bash
-scp s-r nodo1:~/lab_mpi/s-r
-scp s-r nodo2:~/lab_mpi/s-r
-```
+    ``` bash
+    scp s-r nodo1:~/lab_mpi/s-r
+    scp s-r nodo2:~/lab_mpi/s-r
+    ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
-``` bash
-mpirun -np 2 -machinefile machines ~/lab_mpi/s-r
-```
-La salida será:
-``` bash
-```
-Porque en la ejecución correcta del programa no se imprime nada.
+    ``` bash
+    mpirun -np 2 -machinefile machines ~/lab_mpi/s-r
+    ```
+    La salida será:
+    ``` bash
+    ```
+    Porque en la ejecución correcta del programa no se imprime nada.
 
 
 ### Cálculo de PI en MPI
@@ -258,37 +256,37 @@ mpicc -o pi pi.c -lm
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
   * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-``` bash
-cat <<EOF > machines
-nodo1
-nodo2
-EOF
-```
+    ``` bash
+    cat <<EOF > machines
+    nodo1
+    nodo2
+    EOF
+    ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-``` bash
-scp pi nodo1:~/lab_mpi/pi
-scp pi nodo2:~/lab_mpi/pi
-```
+    ``` bash
+    scp pi nodo1:~/lab_mpi/pi
+    scp pi nodo2:~/lab_mpi/pi
+    ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
-``` bash
-mpirun -np 2 -machinefile machines ~/lab_mpi/pi
-```
-La salida será:
-``` bash
-Enter the number of intervals: (0 quits) 10
-pi is approximately 3.1424259850010983, Error is 0.0008333314113051
-Enter the number of intervals: (0 quits) 100
-pi is approximately 3.1416009869231241, Error is 0.0000083333333309
-Enter the number of intervals: (0 quits) 1000
-pi is approximately 3.1415927369231254, Error is 0.0000000833333322
-Enter the number of intervals: (0 quits) 10000
-pi is approximately 3.1415926544231318, Error is 0.0000000008333387
-Enter the number of intervals: (0 quits) 100000
-pi is approximately 3.1415926535981016, Error is 0.0000000000083085
-Enter the number of intervals: (0 quits) 1000000
-pi is approximately 3.1415926535899388, Error is 0.0000000000001457
-Enter the number of intervals: (0 quits) 0
-```
+    ``` bash
+    mpirun -np 2 -machinefile machines ~/lab_mpi/pi
+    ```
+    La salida será:
+    ``` bash
+    Enter the number of intervals: (0 quits) 10
+    pi is approximately 3.1424259850010983, Error is 0.0008333314113051
+    Enter the number of intervals: (0 quits) 100
+    pi is approximately 3.1416009869231241, Error is 0.0000083333333309
+    Enter the number of intervals: (0 quits) 1000
+    pi is approximately 3.1415927369231254, Error is 0.0000000833333322
+    Enter the number of intervals: (0 quits) 10000
+    pi is approximately 3.1415926544231318, Error is 0.0000000008333387
+    Enter the number of intervals: (0 quits) 100000
+    pi is approximately 3.1415926535981016, Error is 0.0000000000083085
+    Enter the number of intervals: (0 quits) 1000000
+    pi is approximately 3.1415926535899388, Error is 0.0000000000001457
+    Enter the number of intervals: (0 quits) 0
+    ```
 
 Agradecer a Lucas la pregunta de qué pasa con 1000000000000 (12 ceros).
 Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en algún cálculo a partir de un número alto de intervalos.

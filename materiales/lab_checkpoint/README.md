@@ -23,68 +23,67 @@
 
 #### 1. Preparación
 
-Si no tiene el directorio *lab_checkpoint* entonces precisa ejecutar:
-```
-git clone https://github.com/acaldero/uc3m_spyd.git
-cd uc3m_spyd/materiales
-```
-Si tiene el directorio *lab_checkpoint* entonces hay que introducir:
-```
-cd lab_checkpoint
-chmod a+x *.sh
-```
+* Si no tiene el directorio *lab_checkpoint* entonces precisa ejecutar:
+  ```
+  git clone https://github.com/acaldero/uc3m_spyd.git
+  cd uc3m_spyd/materiales
+  ```
+* Si tiene el directorio *lab_checkpoint* entonces hay que introducir:
+  ```
+  cd lab_checkpoint
+  chmod a+x *.sh
+  ```
 
 
 #### 2. Ejecutar el ejemplo
 
 * La primera vez que se ejecuta el cliente, se realiza un número indeterminado de iteraciones hasta que falla la ejecución:
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th></tr>
-<tr>
-<td>1</td>
-<td>
+  <html>
+  <table>
+  <tr><th>Paso</th><th>Cliente</th></tr>
+  <tr>
+  <td>1</td>
+  <td>
 
-```
-./run.sh
-+ python3 app.py
-iter:  0
-iter:  1
-iter:  2
-iter:  3
-iter:  4
-🧨 🧨
-```
+  ```
+  ./run.sh
+  + python3 app.py
+  iter:  0
+  iter:  1
+  iter:  2
+  iter:  3
+  iter:  4
+  🧨 🧨
+  ```
 
-</td>
-</tr>
-</table>
-</html>
-
+  </td>
+  </tr>
+  </table>
+  </html>
 
 * Gracias a guardar un punto de recuperación (*checkpoint*) la segunda vez que se ejecuta se continua la ejecución hasta el siguiente fallo (o finalización del programa sin fallo):
-<html>
-<table>
-<tr><th>Paso</th><th>Cliente</th></tr>
-<tr>
-<td>2</td>
-<td>
+  <html>
+  <table>
+  <tr><th>Paso</th><th>Cliente</th></tr>
+  <tr>
+  <td>2</td>
+  <td>
 
-```
-./run.sh
-+ python3 app.py
-iter:  4
-iter:  5
-iter:  6
-iter:  7
-iter:  8
-iter:  9
-🧨 🧨
-```
+  ```
+  ./run.sh
+  + python3 app.py
+  iter:  4
+  iter:  5
+  iter:  6
+  iter:  7
+  iter:  8
+  iter:  9
+  🧨 🧨
+  ```
 
-</td>
-</tr>
-</table>
-</html>
+  </td>
+  </tr>
+  </table>
+  </html>
 
 
