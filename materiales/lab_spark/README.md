@@ -29,28 +29,30 @@
   ./spark/bin/pyspark  --master local[2]
   ```
   Donde el parámetro de "--master" puede ser:
-  * local	    -> 1 hilo
+  * local     -> 1 hilo
   * local[N]  -> N hilos
-  * local[\*] -> tantos hilos como cores haya en el sistema (nproc --all)
+  * local[\*] -> tantos hilos como cores haya en el sistema (```nproc --all```)
 
 
 * Tras ejecutar pyspark como se ha indicado anteriormente, la salida debería ser parecida a:
   ```
-  Python 3.10.12 (main, Sep 11 2024, 15:47:36) [GCC 11.4.0] on linux
+  Python 3.12.3 (main, Jun 18 2025, 17:59:45) [GCC 13.3.0] on linux
   Type "help", "copyright", "credits" or "license" for more information.
+  WARNING: Using incubator modules: jdk.incubator.vector
+  Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
   Setting default log level to "WARN".
   To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-  ...
+  25/07/13 10:26:34 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
   Welcome to
-      ____              __
-     / __/__  ___ _____/ /__
-    _\ \/ _ \/ _ `/ __/  '_/
-   /__ / .__/\_,_/_/ /_/\_\   version 3.5.0
-      /_/
+        ____              __
+       / __/__  ___ _____/ /__
+      _\ \/ _ \/ _ `/ __/  '_/
+     /__ / .__/\_,_/_/ /_/\_\   version 4.0.0
+        /_/
 
-  Using Python version 3.10.12 (main, Sep 11 2024 15:47:36)
-  Spark context Web UI available at http://master:4040
-  Spark context available as 'sc' (master = local[2], app id = local-1729426762360).
+  Using Python version 3.12.3 (main, Jun 18 2025 17:59:45)
+  Spark context Web UI available at http://55c02d4925b5:4040
+  Spark context available as 'sc' (master = local[2], app id = local-1755080795247).
   SparkSession available as 'spark'.
   >>>
   ```
@@ -105,11 +107,11 @@
   ...    return 1 if x ** 2 + y ** 2 < 1 else 0
   ...
   >>> spark = SparkSession.builder.appName("PythonPi").getOrCreate()
-
-  24/10/20 12:19:33 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
+  25/07/13 10:28:40 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
   >>> count = spark.sparkContext.parallelize(range(1, n + 1), partitions).map(f).reduce(add)
+
   >>> print("Pi is roughly %f" % (4.0 * count / n))
-  Pi is roughly 3.132920
+  Pi is roughly 3.141240
   >>> spark.stop()
   >>>
   ```
@@ -124,12 +126,13 @@
 
 * Usaremos el quijote en texto plano para trabajar ([pg2000.txt](https://www.gutenberg.org/files/2000/2000-0.txt)) para lo que usaremos:
   ```
-  curl https://www.gutenberg.org/files/2000/2000-0.txt  -o $HOME/lab_spark/2000-0.txt
+  mkdir -p /home/lab/temp
+  curl https://www.gutenberg.org/files/2000/2000-0.txt  -o /home/lab/temp/2000-0.txt
   ```
 
 * Deberemos borrar cualquier resultado anterior de trabajo:
   ```
-  rm -fr   /home/lab/lab_spark/pg2000-w
+  rm -fr   /home/lab/temp/pg2000-w
   ```
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
@@ -145,31 +148,25 @@
   from pyspark.sql import SparkSession
 
   sc = SparkSession.builder.appName("pywc").getOrCreate()
-  lines = sc.read.text("/home/lab/lab_spark/2000-0.txt").rdd.map(lambda r: r[0])
-  counts = lines.flatMap(lambda x: x.split(' ')) \
-                .map(lambda x: (x, 1)) \
-                .reduceByKey(add)
+  lines = sc.read.text("/home/lab/temp/2000-0.txt").rdd.map(lambda r: r[0])
+  counts = lines.flatMap(lambda x: x.split(' ')).map(lambda x: (x, 1)).reduceByKey(add)
   output = counts.collect()
-  counts.saveAsTextFile("/home/lab/lab_spark/pg2000-w")
+  counts.saveAsTextFile("/home/lab/temp/pg2000-w")
   sc.stop()
   ```
 
 * Tras introducir el código y dar enter se ejecutará, y la salida debería ser parecida a:
   ```
-  >>> 
+  >>>
   >>> import sys
   >>> from operator import add
   >>> from pyspark.sql import SparkSession
   >>>
   >>> sc = SparkSession.builder.appName("pywc").getOrCreate()
-
-  24/10/20 12:20:27 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
-  >>> lines = sc.read.text("/home/lab/lab_spark/2000-0.txt").rdd.map(lambda r: r[0])
-  >>> counts = lines.flatMap(lambda x: x.split(' ')) \
-  ...               .map(lambda x: (x, 1)) \
-  ...               .reduceByKey(add)
+  >>> lines = sc.read.text("/home/lab/temp/2000-0.txt").rdd.map(lambda r: r[0])
+  >>> counts = lines.flatMap(lambda x: x.split(' ')).map(lambda x: (x, 1)).reduceByKey(add)
   >>> output = counts.collect()
-  >>> counts.saveAsTextFile("/home/lab/lab_spark/pg2000-w")
+  >>> counts.saveAsTextFile("/home/lab/temp/pg2000-w")
   >>> sc.stop()
   >>>
   ```
@@ -181,7 +178,7 @@
 
 * Para ver el resultado ejecutaremos:
   ```
-  cat /home/lab/lab_spark/pg2000-w/part-00000
+  cat /home/lab/temp/pg2000-w/part-00000
   ```
 
 
@@ -201,41 +198,42 @@
 
 * En la salida de la ejecución de *pyspark* debemos buscar la URL en la que conectarnos:
   ```
-  [I 20:00:53.903 NotebookApp] Serving notebooks from local directory: /home/lab
-  [I 20:00:53.903 NotebookApp] Jupyter Notebook 6.5.2 is running at:
-  [I 20:00:53.903 NotebookApp] http://master:8888/?token=bcefad0f329df8416ed6c4b40eb9d558bb9e1c4ed4a15ed8
-  [I 20:00:53.903 NotebookApp]  or http://127.0.0.1:8888/?token=bcefad0f329df8416ed6c4b40eb9d558bb9e1c4ed4a15ed8
-  [I 20:00:53.903 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-  [C 20:00:53.907 NotebookApp]
+  [I 10:44:44.828 NotebookApp] Writing notebook server cookie secret to /home/lab/.local/share/jupyter/runtime/notebook_cookie_secret
+  [I 10:44:44.920 NotebookApp] Serving notebooks from local directory: /home/lab
+  [I 10:44:44.920 NotebookApp] Jupyter Notebook 6.4.12 is running at:
+  [I 10:44:44.920 NotebookApp] http://55c02d4925b5:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4d
+  [I 10:44:44.920 NotebookApp]  or http://127.0.0.1:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4d
+  [I 10:44:44.920 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+  [C 10:44:44.921 NotebookApp]
 
-    To access the notebook, open this file in a browser:
-        file:///home/lab/.local/share/jupyter/runtime/nbserver-97145-open.html
-    Or copy and paste one of these URLs:
-        http://master:8888/?token=bcefad0f329df8416ed6c4b40eb9d558bb9e1c4ed4a15ed8
-     or http://127.0.0.1:8888/?token=bcefad0f329df8416ed6c4b40eb9d558bb9e1c4ed4a15ed8
+      To access the notebook, open this file in a browser:
+          file:///home/lab/.local/share/jupyter/runtime/nbserver-2778-open.html
+      Or copy and paste one of these URLs:
+          http://master:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
+       or http://127.0.0.1:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
   ```
 
-* Para conectarnos debemos usar el nombre de la máquina *master* visible en nuestra red, en nuestro caso hay que cambiar *master* por *ssddX.cloud.lab.inf.uc3m.es*: 
+* Para conectarnos debemos usar el nombre de la máquina *master* visible en nuestra red, en nuestro caso hay que cambiar *master* por *ssddX.cloud.lab.inf.uc3m.es*:
   ```
-  http://ssdd0.cloud.lab.inf.uc3m.es:8888/?token=bcefad0f329df8416ed6c4b40eb9d558bb9e1c4ed4a15ed8
+  http://ssdd0.cloud.lab.inf.uc3m.es:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
   ```
 
-* Una vez conectados+as estaremos en la página inicial:  
+* Una vez conectados+as estaremos en la página inicial:
   ![Image](jnb/jnb01-intro.png)
 
-* En la página inicial procederemos a crear un nuevo notebook:  
+* En la página inicial procederemos a crear un nuevo notebook:
   ![image](jnb/jnb02-new-notebook.png)
-  
-* En el nuevo libro tendremos una nueva celda:  
+
+* En el nuevo libro tendremos una nueva celda:
   ![image](jnb/jnb03-new-cell.png)
-  
-* En la celda podemos copiar el ejemplo de PI (y ejecutarlo):  
+
+* En la celda podemos copiar el ejemplo de PI (y ejecutarlo):
   ![image](jnb/jnb04-pi.png)
-  
-* En una nueva celda podemos copiar el ejemplo de contar el número de palabras en local (y ejecutarlo):  
+
+* En una nueva celda podemos copiar el ejemplo de contar el número de palabras en local (y ejecutarlo):
   ![image](jnb/jnb05-pywc-local.png)
-  
-* En una nueva celda podemos copiar el ejemplo de contar el número de palabras en remoto (y ejecutarlo):  
+
+* En una nueva celda podemos copiar el ejemplo de contar el número de palabras en remoto (y ejecutarlo):
   ![image](jnb/jnb07-pywc-remote-2.png)
 
 
@@ -247,7 +245,7 @@
   echo "nodo2" >> spark/conf/workers
   ```
 
-* Todos los nodos han de poder comunicarse con SSH sin precisar clave.  
+* Todos los nodos han de poder comunicarse con SSH sin precisar clave.
   En caso de ser necesario, hay que ejecutar:
   ```
   ssh-keygen -t rsa -P ""
@@ -267,9 +265,9 @@
   ./spark/sbin/start-all.sh
   ```
 
-* Recuerde antes tener borrado el directorio $HOME/lab_spark/pg2000-w que pueda tener alguna ejecución previa:
+* Recuerde antes tener borrado el directorio $HOME/temp/pg2000-w que pueda tener alguna ejecución previa:
   ```
-  rm -fr $HOME/lab_spark/pg2000-w
+  rm -fr $HOME/temp/pg2000-w
   ```
 
 * El programa cambia solo añadiendo ".master("spark://master:7077")" en nuestro ejemplo:
@@ -279,12 +277,12 @@
   from pyspark.sql import SparkSession
 
   sc = SparkSession.builder.appName("pywc").master("spark://master:7077").getOrCreate()
-  lines = sc.read.text("/home/lab/lab_spark/2000-0.txt").rdd.map(lambda r: r[0])
+  lines = sc.read.text("/home/lab/temp/2000-0.txt").rdd.map(lambda r: r[0])
   counts = lines.flatMap(lambda x: x.split(' ')) \
                 .map(lambda x: (x, 1)) \
                 .reduceByKey(add)
   output = counts.collect()
-  counts.saveAsTextFile("/home/lab/lab_spark/pg2000-w")
+  counts.saveAsTextFile("/home/lab/temp/pg2000-w")
   sc.stop()
   ```
   El [tutorial](https://towardsdatascience.com/how-to-connect-jupyter-notebook-to-remote-spark-clusters-and-run-spark-jobs-every-day-2c5a0c1b61df) muestra un entorno parecido.
@@ -296,7 +294,7 @@
 
 * Para ver el resultado ejecutaremos:
   ```
-  cat /home/lab/lab_spark/pg2000-w/part-00000
+  cat /home/lab/temp/pg2000-w/part-00000
   ```
 
 * En el nodo master cuando se termine la sesión de trabajo se para *Spark* usando:

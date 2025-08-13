@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 
 Para compilar hay que usar mpicc:
 ``` bash
-cd ~/lab_mpi
+cd materiales/lab_mpi
 mpicc -g -Wall -c hola.c -o hola.o
 mpicc -g -Wall -o hola hola.o
 ```
@@ -109,14 +109,14 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
     ``` bash
-    ssh nodo1 mkdir -p ~/lab_mpi
-    ssh nodo2 mkdir -p ~/lab_mpi
-    scp hola nodo1:~/lab_mpi/hola
-    scp hola nodo2:~/lab_mpi/hola
+    ssh nodo1 mkdir -p ~/materiales/lab_mpi
+    ssh nodo2 mkdir -p ~/materiales/lab_mpi
+    scp hola nodo1:~/materiales/lab_mpi/hola
+    scp hola nodo2:~/materiales/lab_mpi/hola
     ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
     ``` bash
-    mpirun -np 4 -machinefile machines ~/lab_mpi/hola
+    mpirun -np 4 -machinefile machines ~/materiales/lab_mpi/hola
     ```
     La salida podría ser:
     ``` bash
@@ -178,12 +178,12 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
     ``` bash
-    scp s-r nodo1:~/lab_mpi/s-r
-    scp s-r nodo2:~/lab_mpi/s-r
+    scp s-r nodo1:~/materiales/lab_mpi/s-r
+    scp s-r nodo2:~/materiales/lab_mpi/s-r
     ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
     ``` bash
-    mpirun -np 2 -machinefile machines ~/lab_mpi/s-r
+    mpirun -np 2 -machinefile machines ~/materiales/lab_mpi/s-r
     ```
     La salida será:
     ``` bash
@@ -222,7 +222,7 @@ char *argv[];
 	}
 	MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	if (n == 0) break;
-  
+
 	h   = 1.0 / (double) n;
 	sum = 0.0;
 	for (i = myid + 1; i <= n; i += numprocs) {
@@ -230,10 +230,10 @@ char *argv[];
 	    sum += 4.0 / (1.0 + x*x);
 	}
 	mypi = h * sum;
-    
+
 	MPI_Reduce(&mypi, &pi, 1, MPI_DOUBLE, MPI_SUM, 0,
 		   MPI_COMM_WORLD);
-    
+
 	if (myid == 0)
 	    printf("pi is approximately %.16f, Error is %.16f\n",
 		   pi, fabs(pi - PI25DT));
@@ -264,12 +264,12 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     ```
   * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
     ``` bash
-    scp pi nodo1:~/lab_mpi/pi
-    scp pi nodo2:~/lab_mpi/pi
+    scp pi nodo1:~/materiales/lab_mpi/pi
+    scp pi nodo2:~/materiales/lab_mpi/pi
     ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
     ``` bash
-    mpirun -np 2 -machinefile machines ~/lab_mpi/pi
+    mpirun -np 2 -machinefile machines ~/materiales/lab_mpi/pi
     ```
     La salida será:
     ``` bash

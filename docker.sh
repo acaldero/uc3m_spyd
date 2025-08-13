@@ -34,24 +34,24 @@ spyd_docker_help_c ()
         echo "  Usage: $0 <action> [<options>]"
         echo ""
         echo "  :: First time + each time docker/dockerfile is updated, please execute:"
-        echo "        $0 build"
+        echo "         $0 build"
         echo ""
-        echo "  :: Working with uc3m_spyd:"
+        echo "  :: Typical workflow:"
         echo "     1) Starting the containers:"
-        echo "        $0 start       <number of containers>"
+        echo "         $0 start  <number of containers>"
         echo ""
         echo "     2) To work with containers:"
         echo "        * To work within a single container:"
-        echo "           $0 bash <container id, from 1 to number_of_containers>"
-        echo "           <some work...>"
-        echo "           exit"
+        echo "            $0 bash   <container id, from 1 to number_of_containers>"
+        echo "            <some work...>"
+        echo "            exit"
         echo "        * To execute \"command\" on <number of containers> containers:"
-        echo "           $0 mpirun <number of containers> \"<command>\""
+        echo "            $0 mpirun <number of containers> \"<command>\""
         echo "        * To work on a single container:"
-        echo "           $0 exec <container id, from 1 to number_of_containers> \"<command>\""
+        echo "            $0 exec   <container id, from 1 to number_of_containers> \"<command>\""
         echo ""
         echo "     3) Stopping the containers:"
-        echo "        $0 stop"
+        echo "         $0 stop"
         echo ""
 }
 
@@ -280,7 +280,7 @@ spyd_docker_start ()
                 CONTAINER_ID_LIST=$(docker ps -f name=docker -q)
                 for C in $CONTAINER_ID_LIST; do
                     docker container exec -it $C  /shared/docker/base-srv/hosts_update.sh
-                    docker container exec -it $C  ln -s /shared/materiales /home/lab/materiales
+                    docker container exec -it $C  ln -fs /shared/materiales /home/lab/materiales
                 done
 
         fi

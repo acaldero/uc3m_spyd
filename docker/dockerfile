@@ -9,11 +9,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # A) Install software
 
 ## Install *base* software
-RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
+RUN apt-get update && apt-get install -y --allow-change-held-packages \
         aptitude apt-utils \
         zlib1g-dev ca-certificates pkg-config \
         software-properties-common gpg-agent \
-        curl libcurl3-dev \
+        curl libcurl3-dev lynx \
         wget rsync \
         sudo vim \
         \
@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-
     apt-get clean
 
 ## Install *development* software
-RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
+RUN apt-get update && apt-get install -y --allow-change-held-packages \
         \
         build-essential \
         autoconf cmake g++ git \
@@ -47,8 +47,8 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-
 	libjson-c-dev \
         nasm \
         \
-        python3-pip \
         openjdk-21-jdk \
+        python3-pip jupyter \
         && \
     apt-get clean
 
@@ -56,7 +56,7 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-change-held-
 # B) Install and configure OpenSSH
 
 ## Install SSH
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server
+RUN apt-get install -y openssh-client openssh-server
 RUN mkdir -p /var/run/sshd
 
 ## Allow Root login
@@ -114,7 +114,7 @@ USER root
 RUN mkdir -p /shared
 RUN mkdir -p /srv
 
-ADD  docker/base-srv     /tmp/base-srv/
+ADD docker/base-srv     /tmp/base-srv/
 RUN mv /tmp/base-srv/*   /srv
 WORKDIR /home/lab
 
