@@ -280,7 +280,6 @@ spyd_docker_start ()
                 CONTAINER_ID_LIST=$(docker ps -f name=docker -q)
                 for C in $CONTAINER_ID_LIST; do
                     docker container exec -it $C  /shared/docker/base-srv/hosts_update.sh
-                    docker container exec -it $C  ln -fs /shared/materiales /home/lab/materiales
                 done
 
         fi

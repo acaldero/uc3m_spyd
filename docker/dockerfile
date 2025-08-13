@@ -105,8 +105,8 @@ USER lab
 # E) Laboratories: MPI + Apache Spark
 
 USER lab
-RUN /home/lab/bin/install-mpich.sh
-RUN /home/lab/bin/install-spark.sh /home/lab/
+RUN /home/lab/bin/install-openmpi.sh  /home/lab
+RUN /home/lab/bin/install-spark.sh    /home/lab/
 
 
 # F) Container start-up

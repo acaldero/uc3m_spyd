@@ -87,9 +87,9 @@ Para ejecutar en la máquina local hay que hacer dos pasos:
     localhost
     EOF
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
+  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
     ``` bash
-    mpirun -np 2 -machinefile machines ./hola
+    mpirun -np 2 -machinefile machines --map-by node ./hola
     ```
     La salida podría ser:
     ``` bash
@@ -114,9 +114,9 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     scp hola nodo1:~/materiales/lab_mpi/hola
     scp hola nodo2:~/materiales/lab_mpi/hola
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
+  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
     ``` bash
-    mpirun -np 4 -machinefile machines ~/materiales/lab_mpi/hola
+    mpirun -np 4 -machinefile machines --map-by node ~/materiales/lab_mpi/hola
     ```
     La salida podría ser:
     ``` bash
@@ -181,9 +181,9 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     scp s-r nodo1:~/materiales/lab_mpi/s-r
     scp s-r nodo2:~/materiales/lab_mpi/s-r
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
+  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
     ``` bash
-    mpirun -np 2 -machinefile machines ~/materiales/lab_mpi/s-r
+    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/s-r
     ```
     La salida será:
     ``` bash
@@ -269,7 +269,7 @@ Para ejecutar en dos nodos hay que hacer tres pasos:
     ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
     ``` bash
-    mpirun -np 2 -machinefile machines ~/materiales/lab_mpi/pi
+    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/pi
     ```
     La salida será:
     ``` bash
