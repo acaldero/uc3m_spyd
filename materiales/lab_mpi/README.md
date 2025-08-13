@@ -11,7 +11,7 @@
   * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
   * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
 * Software necesario:
-  * [Instalación de MPI](/materiales/SW_mpi.md)
+  * [Instalación de MPI](/materiales/SW_openmpi.md)
 * Ejemplos para aprender:
   * [Hola mundo en MPI](#hola-mundo-en-mpi)
   * [Send y Receive en MPI](#send-y-receive-en-mpi)

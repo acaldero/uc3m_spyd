@@ -209,7 +209,7 @@ spyd_docker_build ()
         HOST_GID=$2
         CACHE=$3
 
-        docker image build ${CACHE} -t expandfs/uc3m_spyd --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
+        docker image build ${CACHE} -t uc3m_spyd --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
 }
 
 spyd_docker_save ()
@@ -235,7 +235,7 @@ spyd_docker_load ()
 spyd_docker_pull ()
 {
    echo "Pulling uc3m_spyd image..."
-   docker pull expandfs/uc3m_spyd
+   docker pull uc3m_spyd
 }
 
 spyd_docker_start ()
