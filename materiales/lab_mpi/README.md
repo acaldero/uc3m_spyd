@@ -18,30 +18,30 @@
   * [Cálculo de PI en MPI](#cálculo-de-pi-en-mpi)
 
 
-## Ejemplos para aprender
+### 1. Hola mundo en MPI
 
 Se parte de un archivo fuente vacío y el ciclo de trabajo típico es un bucle con los siguientes pasos en cada iteración:
 
- 1. Editar el archivo fuente para añadir funcionalidad.
+ 1. Editar el archivo fuente con la funcionalidad deseada.
     * Anotar como comentario lo que se quiere hacer
     * Después de cada comentario añadir el código fuente asociado.
  2. Compilar el archivo fuente a binario.
     * Eliminar errores de compilación.
- 3. Ejecutar el archivo binario.
-    * Eliminar errores de ejecución.
+ 3. Ejecutar el archivo binario:
+    * En local: Eliminar errores de ejecución.
+    * En remoto: Eliminar errores de ejecución que hayan quedado.
 
+</br>
 
-### Hola mundo en MPI
+#### 1.1. Editar "hola mundo" en MPI
 
-#### 1. Editar "hola mundo" en MPI
+* Hay que editar un archivo [hola_mpi.c](hola_mpi.c) con un contenido similar a:
+  ```c
+  #include <stdio.h>
+  #include <mpi.h>
 
-Hay que editar un archivo [hola.c](hola.c) con un contenido similar a:
-``` C
-#include <stdio.h>
-#include <mpi.h>
-
-int main(int argc, char** argv)
-{
+  int main(int argc, char** argv)
+  {
    int world_size;
    int world_rank;
    char processor_name[MPI_MAX_PROCESSOR_NAME];
@@ -63,81 +63,84 @@ int main(int argc, char** argv)
 
    // Última llamada MPI a usar en el programa
    MPI_Finalize();
-}
-```
+  }
+  ```
 
 
-#### 2. Compilar "hola mundo" en MPI
+#### 1.2. Compilar "hola mundo" en MPI
 
-Para compilar hay que usar mpicc:
-``` bash
-cd materiales/lab_mpi
-mpicc -g -Wall -c hola.c -o hola.o
-mpicc -g -Wall -o hola hola.o
-```
+* Para compilar hay que usar ```mpicc```:
+  ```bash
+  cd materiales/lab_mpi
+  mpicc -g -Wall -c hola_mpi.c -o hola_mpi.o
+  mpicc -g -Wall -o hola_mpi hola_mpi.o
+  ```
 
+#### 1.3 Ejecutar "hola mundo"
 
-#### 3.A Ejecutar en nodo local
+#### 1.3.A En nodo local
 
 Para ejecutar en la máquina local hay que hacer dos pasos:
-  * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-    ``` bash
+  1 .Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
+    ```bash
     cat <<EOF > machines
     localhost
     localhost
     EOF
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
-    ``` bash
-    mpirun -np 2 -machinefile machines --map-by node ./hola
-    ```
-    La salida podría ser:
-    ``` bash
-    Hola mundo desde 'master' (rank 1 de 2)
-    Hola mundo desde 'master' (rank 0 de 2)
+  2. Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
+    ```bash
+    mpirun -np 2 -machinefile machines --map-by node ./hola_mpi
     ```
 
-#### 3.B Ejecutar en nodos remotos
+La salida podría ser:
+```bash
+Hola mundo desde 'master' (rank 1 de 2)
+Hola mundo desde 'master' (rank 0 de 2)
+```
+
+#### 1.3.B En nodos remotos
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
-  * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-    ``` bash
+  1. Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
+    ```bash
     cat <<EOF > machines
     nodo1
     nodo2
     EOF
     ```
-  * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-    ``` bash
+  2. Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
+    ```bash
     ssh nodo1 mkdir -p ~/materiales/lab_mpi
     ssh nodo2 mkdir -p ~/materiales/lab_mpi
-    scp hola nodo1:~/materiales/lab_mpi/hola
-    scp hola nodo2:~/materiales/lab_mpi/hola
+    scp hola_mpi nodo1:~/materiales/lab_mpi/hola_mpi
+    scp hola_mpi nodo2:~/materiales/lab_mpi/hola_mpi
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
-    ``` bash
-    mpirun -np 4 -machinefile machines --map-by node ~/materiales/lab_mpi/hola
-    ```
-    La salida podría ser:
-    ``` bash
-    Hola mundo desde 'nodo2' (rank 3 de 4)
-    Hola mundo desde 'nodo1' (rank 0 de 4)
-    Hola mundo desde 'nodo2' (rank 1 de 4)
-    Hola mundo desde 'nodo1' (rank 2 de 4)
+  3. Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
+    ```bash
+    mpirun -np 4 -machinefile machines --map-by node ~/materiales/lab_mpi/hola_mpi
     ```
 
+La salida podría ser:
+```bash
+Hola mundo desde 'nodo2' (rank 3 de 4)
+Hola mundo desde 'nodo1' (rank 0 de 4)
+Hola mundo desde 'nodo2' (rank 1 de 4)
+Hola mundo desde 'nodo1' (rank 2 de 4)
+```
 
-### Send y Receive en MPI
 
-#### 1. Editar
+### 2. Send y Receive en MPI
 
-Hay que editar un archivo [s-r.c](s-r.c) con un contenido similar a:
-``` C
-#include <stdio.h>
-#include "mpi.h"
+#### 2.1. Editar
 
-int main ( int argc, char **argv )
-{
+* Hay que editar un archivo [sr_mpi.c](sr_mpi.c) con un contenido similar a:
+  ```c
+  #include <stdio.h>
+  #include "mpi.h"
+
+  int main ( int argc, char **argv )
+  {
         int  node, size;
         int  num = 10;
         char name[255];
@@ -154,58 +157,57 @@ int main ( int argc, char **argv )
         MPI_Finalize();
 
         return 0 ;
-}
-```
+  }
+  ```
 
 
-#### 2. Compilar
+#### 2.2. Compilar
 
-Para compilar hay que usar mpicc:
-``` bash
-mpicc -o s-r s-r.c -lm
-```
+* Para compilar hay que usar mpicc:
+  ```bash
+  mpicc -o sr_mpi sr_mpi.c -lm
+  ```
 
 
-#### 3. Ejecutar (remoto)
+#### 2.3. Ejecutar (remoto)
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
-  * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-    ``` bash
+  1. Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
+    ```bash
     cat <<EOF > machines
     nodo1
     nodo2
     EOF
     ```
-  * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-    ``` bash
-    scp s-r nodo1:~/materiales/lab_mpi/s-r
-    scp s-r nodo2:~/materiales/lab_mpi/s-r
+  2. Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
+    ```bash
+    scp sr_mpi nodo1:~/materiales/lab_mpi/sr_mpi
+    scp sr_mpi nodo2:~/materiales/lab_mpi/sr_mpi
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
-    ``` bash
-    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/s-r
+  3. Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
+    ```bash
+    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/sr_mpi
     ```
-    La salida será:
-    ``` bash
-    ```
-    Porque en la ejecución correcta del programa no se imprime nada.
+
+La salida será:
+```bash
+```
+Porque en la ejecución correcta del programa no se imprime nada.
 
 
-### Cálculo de PI en MPI
+### 3. Cálculo de PI en MPI
 
-#### 1. Editar
+#### 3.1. Editar
 
-Hay que editar un archivo [pi.c](pi.c) con un contenido similar a:
-``` C
+Hay que editar un archivo [pi_mpi.c](pi_mpi.c) con un contenido similar a:
+```c
 /* From https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html */
 
 #include "mpi.h"
 #include <math.h>
 #include <stdio.h>
 
-int main(argc,argv)
-int argc;
-char *argv[];
+int main ( int argc, char *argv[] )
 {
     int done = 0, n, myid, numprocs, i;
     double PI25DT = 3.141592653589793238462643;
@@ -244,49 +246,50 @@ char *argv[];
 ```
 
 
-#### 2. Compilar
+#### 3.2. Compilar
 
-Para compilar hay que usar mpicc:
-``` bash
-mpicc -o pi pi.c -lm
-```
+* Para compilar hay que usar mpicc:
+  ```bash
+  mpicc -o pi_mpi pi_mpi.c -lm
+  ```
 
 
-#### 3. Ejecutar (remoto)
+#### 3.3. Ejecutar (remoto)
 
 Para ejecutar en dos nodos hay que hacer tres pasos:
-  * Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
-    ``` bash
+  1. Ha de crearse un archivo machines con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
+    ```bash
     cat <<EOF > machines
     nodo1
     nodo2
     EOF
     ```
-  * Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
-    ``` bash
-    scp pi nodo1:~/materiales/lab_mpi/pi
-    scp pi nodo2:~/materiales/lab_mpi/pi
+  2. Ha de tener el ejecutable en todos los nodos (si no se tiene un directorio de cuenta compartido en las máquinas):
+    ```bash
+    scp pi_mpi nodo1:~/materiales/lab_mpi/pi_mpi
+    scp pi_mpi nodo2:~/materiales/lab_mpi/pi_mpi
     ```
-  * Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
-    ``` bash
-    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/pi
+  3. Ha de lanzarse la ejecución en las máquinas deseadas usando mpirun:
+    ```bash
+    mpirun -np 2 -machinefile machines --map-by node ~/materiales/lab_mpi/pi_mpi
     ```
-    La salida será:
-    ``` bash
-    Enter the number of intervals: (0 quits) 10
-    pi is approximately 3.1424259850010983, Error is 0.0008333314113051
-    Enter the number of intervals: (0 quits) 100
-    pi is approximately 3.1416009869231241, Error is 0.0000083333333309
-    Enter the number of intervals: (0 quits) 1000
-    pi is approximately 3.1415927369231254, Error is 0.0000000833333322
-    Enter the number of intervals: (0 quits) 10000
-    pi is approximately 3.1415926544231318, Error is 0.0000000008333387
-    Enter the number of intervals: (0 quits) 100000
-    pi is approximately 3.1415926535981016, Error is 0.0000000000083085
-    Enter the number of intervals: (0 quits) 1000000
-    pi is approximately 3.1415926535899388, Error is 0.0000000000001457
-    Enter the number of intervals: (0 quits) 0
-    ```
+
+La salida será:
+```bash
+Enter the number of intervals: (0 quits) 10
+pi is approximately 3.1424259850010983, Error is 0.0008333314113051
+Enter the number of intervals: (0 quits) 100
+pi is approximately 3.1416009869231241, Error is 0.0000083333333309
+Enter the number of intervals: (0 quits) 1000
+pi is approximately 3.1415927369231254, Error is 0.0000000833333322
+Enter the number of intervals: (0 quits) 10000
+pi is approximately 3.1415926544231318, Error is 0.0000000008333387
+Enter the number of intervals: (0 quits) 100000
+pi is approximately 3.1415926535981016, Error is 0.0000000000083085
+Enter the number of intervals: (0 quits) 1000000
+pi is approximately 3.1415926535899388, Error is 0.0000000000001457
+Enter the number of intervals: (0 quits) 0
+```
 
 Agradecer a Lucas la pregunta de qué pasa con 1000000000000 (12 ceros).
 Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en algún cálculo a partir de un número alto de intervalos.
@@ -294,8 +297,8 @@ Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en al
 
 ## Bibliografía de ejemplos de MPI
 
-* [mpi_hola.c](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-hello-world/code)
-* [pi.c](https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html)
+* [hola_mpi.c](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-hello-world/code)
+* [pi_mpi.c](https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html)
 * [llamadas colectivas](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-broadcast-and-collective-communication)
 
 

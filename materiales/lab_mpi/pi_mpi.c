@@ -4,9 +4,7 @@
 #include <math.h>
 #include "mpi.h"
 
-int main(argc,argv)
-int argc;
-char *argv[];
+int main ( int argc, char *argv[] )
 {
     int done = 0, n, myid, numprocs, i;
     double PI25DT = 3.141592653589793238462643;
@@ -15,6 +13,7 @@ char *argv[];
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD,&myid);
+
     while (!done)
     {
 	if (myid == 0) {

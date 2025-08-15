@@ -16,12 +16,9 @@
   * [Checkpointing](#checkpointing)
 
 
+## Checkpointing
 
-## Ejemplo para aprender
-
-### Checkpointing
-
-#### 1. Preparación
+### 1. Preparación
 
 * Si no tiene el directorio *lab_checkpoint* entonces precisa ejecutar:
   ```
@@ -35,7 +32,66 @@
   ```
 
 
-#### 2. Ejecutar el ejemplo
+#### 2. Ejemplo de uso de checkpoint
+
+* Partimos del uso de la librería ```pickle``` que permite guardar un objeto de python en un archivo (y luego recuperarlo), así como de tres primitivas: save, load y remove:
+  ```python
+  import pickle
+
+  def chkpnt_save ( state ):
+    try:
+       with open("checkpoint.pickle", "wb") as outfile:
+            pickle.dump(state, outfile)
+       return 1
+    except Exception as e:
+       return -1
+
+  def chkpnt_load ( ):
+    try:
+        with open("checkpoint.pickle", "rb") as infile:
+             state = pickle.load(infile)
+        return state
+    except Exception as e:
+        return None
+
+  def chkpnt_remove():
+    os.remove("checkpoint.pickle")
+    return 1
+  ```
+
+* A dichas primitivas se añade el fragmento de código que las utiliza:
+  ```python
+  import os
+  import sys
+  import random
+  import time
+
+  # try to restart from last checkpoint...
+  state = chkpnt_load()
+  if state == None:
+     state = {"iter": 0}
+
+  while state['iter'] < 50:
+     # save checkpoint
+     print('iter: ', state['iter'])
+     chkpnt_save(state) 
+
+     # processing that can fail...
+     time.sleep(1)
+     dice = random.randint(0,9)
+     if (dice > 7):
+         print('\U0001F9E8', '\U0001F9E8')
+         sys.exit()
+
+     # next iteration
+     state['iter'] = state['iter'] + 1
+
+  # remove checkpoint
+  chkpnt_remove()    
+  ```
+
+
+### 3. Ejecutar el ejemplo
 
 * La primera vez que se ejecuta el cliente, se realiza un número indeterminado de iteraciones hasta que falla la ejecución:
   <html>
