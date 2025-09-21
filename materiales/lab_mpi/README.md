@@ -12,10 +12,12 @@
   * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
 * Software necesario:
   * [Instalación de MPI](/materiales/SW_openmpi.md)
-* Ejemplos para aprender:
+* Ejemplos con MPI para aprender:
   * [Hola mundo en MPI](#hola-mundo-en-mpi)
   * [Send y Receive en MPI](#send-y-receive-en-mpi)
   * [Cálculo de PI en MPI](#cálculo-de-pi-en-mpi)
+* Más ejemplos:
+  * [Cálculo de PI en OpenMP vs MPI](#cálculo-de-pi-en-openmp-vs-mpi)
 
 
 ### 1. Hola mundo en MPI
@@ -300,5 +302,121 @@ Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en al
 * [hola_mpi.c](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-hello-world/code)
 * [pi_mpi.c](https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/pi/C/main.html)
 * [llamadas colectivas](https://github.com/mpitutorial/mpitutorial/tree/gh-pages/tutorials/mpi-broadcast-and-collective-communication)
+
+
+
+### 4. Cálculo de PI en OpenMP vs MPI
+
+#### 4.1. Editar
+
+Hay que editar un archivo [pi_omp_1000000000.c](pi_omp_1000000000.c) con un contenido similar a:
+```c
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <omp.h>
+
+#define N 1000000000
+#define d 1E-9
+
+int main ( int argc, char* argv[] )
+{
+    long long i;
+    double PI = 0.0, result = 0.0;
+
+    #pragma omp parallel for reduction(+:result)
+    for (i = 0; i < N; i++) {
+        double x = d * i;
+        result += sqrt(4 * (1 - x * x)) * d;
+    }
+
+    PI = 2 * result;
+    printf("PI = %f\n", PI);
+
+    return 0;
+}
+```
+
+Hay que editar un archivo [pi_mpi_1000000000.c](pi_mpi_1000000000.c) con un contenido similar a:
+```c
+#include <stdio.h>
+#include <math.h>
+#include "mpi.h"
+
+#define N 1000000000
+#define d 1E-9
+
+int main ( int argc, char *argv[] )
+{
+    int    myid, numprocs, i;
+    double PI25DT = 3.141592653589793238462643;
+    double mypi, pi, h, sum, x;
+
+    MPI_Init(&argc,&argv);
+    MPI_Comm_size(MPI_COMM_WORLD,&numprocs);
+    MPI_Comm_rank(MPI_COMM_WORLD,&myid);
+
+    h   = 1.0 / (double) N;
+    sum = 0.0;
+    for (i = myid + 1; i <= N; i += numprocs) {
+         x = h * ((double)i - 0.5);
+         sum += 4.0 / (1.0 + x*x);
+    }
+    mypi = h * sum;
+
+    MPI_Reduce(&mypi, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    if (myid == 0) {
+        printf("pi is approximately %.16f, Error is %.16f\n",
+               pi, fabs(pi - PI25DT));
+    }
+
+    MPI_Finalize();
+    return 0;
+}
+```
+
+
+#### 4.2. Compilar
+
+* Para compilar hay que usar gcc y mpicc:
+  ```bash
+    gcc -O2 -o pi_omp_1000000000 pi_omp_1000000000.c -lm -fopenmp -lpthread
+  mpicc -O2 -o pi_mpi_1000000000 pi_mpi_1000000000.c -lm
+  ```
+
+
+#### 4.3. Ejecutar
+
+* Para ejecutar con OpenMP, se puede usar:
+  ```bash
+  time OMP_NUM_THREADS=8  ./pi_omp_1000000000
+  ```
+
+* La salida puede ser:
+  ```bash
+  PI = 3.141593
+
+  real    0m0.187s
+  user    0m1.909s
+  sys     0m0.000s
+  ```
+
+* Para ejecutar con MPI, se puede usar:
+  ```bash
+  mpirun -np 8 ./pi_mpi_1000000000
+  ```
+
+* La salida puede ser:
+  ```bash
+  pi is approximately 3.1415926535899708, Error is 0.0000000000001776
+  ...
+
+  real    0m0.845s
+  user    0m2.154s
+  sys     0m0.000s
+  ```
 
 
