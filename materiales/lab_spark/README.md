@@ -7,11 +7,12 @@
 
 ## Laboratorio sobre Alta Escalabilidad en Sistemas Distribuidos
 
-* Máquinas de trabajo:
-  * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
-  * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
-* Software necesario:
-  * [Instalación de Apache Spark](/materiales/SW_spark.md)
+* Entorno hardware y software:
+  * Máquinas de trabajo:
+    * Opción 1: [Sistema dedicado en la nube cloud.lab.inf.uc3m.es](/materiales/ENV_cloud.md)
+    * Opción 2: [Sistema propio usando contenedores docker](/materiales/ENV_docker.md)
+  * Software necesario:
+    * [Instalación de Apache Spark](/materiales/SW_spark.md)
 * Ejemplos para aprender:
   * [Apache Spark en nodo autónomo y shell interactivo](#apache-spark-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
   * [Ejemplo: cálculo de pi en nodo autónomo y shell interactivo](#ejemplo-c%C3%A1lculo-de-pi-en-nodo-aut%C3%B3nomo-y-shell-interactivo)
