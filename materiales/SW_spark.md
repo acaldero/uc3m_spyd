@@ -23,9 +23,9 @@
 * Para instalar Apache Spark en su cuenta personal puede ejecutar:
   ```
   cd $HOME
-  wget https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz
-  tar zxf spark-4.0.0-bin-hadoop3.tgz
-  ln   -s spark-4.0.0-bin-hadoop3  spark
+  wget https://dlcdn.apache.org/spark/spark-4.0.1/spark-4.0.1-bin-hadoop3.tgz
+  tar zxf spark-4.0.1-bin-hadoop3.tgz
+  ln   -s spark-4.0.1-bin-hadoop3  spark
   ```
 
 * Después de instalar, hay que configurar dos variables de entorno para usar Apache Spark:

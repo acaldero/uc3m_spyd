@@ -13,11 +13,11 @@ pip3 install py4j --break-system-packages
 
 # 3) Download and install Spark
 mkdir -p ${DESTINATION_PATH}
-if [ ! -f ${DESTINATION_PATH}/spark-4.0.0-bin-hadoop3.tgz ]; then
-     wget https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz \
-          -O ${DESTINATION_PATH}/spark-4.0.0-bin-hadoop3.tgz
-     tar zxf ${DESTINATION_PATH}/spark-4.0.0-bin-hadoop3.tgz -C ${DESTINATION_PATH}
-     mv ${DESTINATION_PATH}/spark-4.0.0-bin-hadoop3             ${DESTINATION_PATH}/spark
+if [ ! -f ${DESTINATION_PATH}/spark-4.0.1-bin-hadoop3.tgz ]; then
+     wget https://dlcdn.apache.org/spark/spark-4.0.1/spark-4.0.1-bin-hadoop3.tgz \
+          -O ${DESTINATION_PATH}/spark-4.0.1-bin-hadoop3.tgz
+     tar zxf ${DESTINATION_PATH}/spark-4.0.1-bin-hadoop3.tgz -C ${DESTINATION_PATH}
+     mv ${DESTINATION_PATH}/spark-4.0.1-bin-hadoop3             ${DESTINATION_PATH}/spark
 fi
 
 # 4) PATH
