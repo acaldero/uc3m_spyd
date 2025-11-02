@@ -107,11 +107,11 @@
 * Para ejecutar en la máquina local hay que hacer dos pasos:
   * Ha de crearse un archivo ```machines``` con la lista de máquinas (una por línea) que van a ser usadas para ejecutar:
     ```bash
-     cd  ~/lab_mpi
-     cat <<EOF > machines
-     localhost
-     localhost
-     EOF
+    cd  ~/lab_mpi
+    cat <<EOF > machines
+    localhost
+    localhost
+    EOF
     ```
   * Ha de lanzarse la ejecución en las máquinas deseadas usando ```mpirun```:
     ```bash
