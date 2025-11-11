@@ -16,7 +16,7 @@
 * Ejemplos con MPI para aprender:
   * [Hola mundo en MPI](#1-hola-mundo-en-mpi)
   * [Send y Receive en MPI](#2-send-y-receive-en-mpi)
-  * [Cálculo de PI en MPI](3-c%C3%A1lculo-de-pi-en-mpi)
+  * [Cálculo de PI en MPI](#3-c%C3%A1lculo-de-pi-en-mpi)
 * Más ejemplos:
   * [Cálculo de PI en OpenMP vs MPI](#4-c%C3%A1lculo-de-pi-en-openmp-vs-mpi)
 
