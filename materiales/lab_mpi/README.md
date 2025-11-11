@@ -290,7 +290,12 @@
 
 #### 3.2. Compilar
 
-* Para compilar hay que usar ```mpicc``` y la librería matemática:
+* Para compilar hay que usar ```mpicc```:
+  ```bash
+  mpicc -o pi_mpi pi_mpi.c 
+  ```
+
+* Es posible que en algún sistema se precise usar la librería matemática ```-lm```:
   ```bash
   mpicc -o pi_mpi pi_mpi.c -lm
   ```
