@@ -2,7 +2,7 @@
 #set -x
 
 #
-#  Copyright 2019-2025 Alejandro Calderon Mateos, Felix Garcia Carballeira, Diego Camarmas Alonso
+#  Copyright 2019-2026 Alejandro Calderon Mateos, Felix Garcia Carballeira, Diego Camarmas Alonso
 #
 #  This file is part of SPyD-Docker proyect.
 #
@@ -23,36 +23,36 @@
 
 spyd_docker_welcome ()
 {
-        echo ""
-        echo "  Sistemas Paralelos y Distribuidos (Docker) "
-        echo " --------------------------------------------"
-        echo ""
+     echo ""
+     echo "  Sistemas Paralelos y Distribuidos (Docker) "
+     echo " --------------------------------------------"
+     echo ""
 }
 
 spyd_docker_help_c ()
 {
-        echo "  Usage: $0 <action> [<options>]"
-        echo ""
-        echo "  :: First time + each time docker/dockerfile is updated, please execute:"
-        echo "         $0 build"
-        echo ""
-        echo "  :: Typical workflow:"
-        echo "     1) Starting the containers:"
-        echo "         $0 start  <number of containers>"
-        echo ""
-        echo "     2) To work with containers:"
-        echo "        * To work within a single container:"
-        echo "            $0 bash   <container id, from 1 to number_of_containers>"
-        echo "            <some work...>"
-        echo "            exit"
-        echo "        * To execute \"command\" on <number of containers> containers:"
-        echo "            $0 mpirun <number of containers> \"<command>\""
-        echo "        * To work on a single container:"
-        echo "            $0 exec   <container id, from 1 to number_of_containers> \"<command>\""
-        echo ""
-        echo "     3) Stopping the containers:"
-        echo "         $0 stop"
-        echo ""
+     echo "  Usage: $0 <action> [<options>]"
+     echo ""
+     echo "  :: First time + each time docker/dockerfile is updated, please execute:"
+     echo "         $0 build"
+     echo ""
+     echo "  :: Typical workflow:"
+     echo "     1) Starting the containers:"
+     echo "         $0 start  <number of containers>"
+     echo ""
+     echo "     2) To work with containers:"
+     echo "        * To work within a single container:"
+     echo "            $0 bash   <container id, from 1 to number_of_containers>"
+     echo "            <some work...>"
+     echo "            exit"
+     echo "        * To execute \"command\" on <number of containers> containers:"
+     echo "            $0 mpirun <number of containers> \"<command>\""
+     echo "        * To work on a single container:"
+     echo "            $0 exec   <container id, from 1 to number_of_containers> \"<command>\""
+     echo ""
+     echo "     3) Stopping the containers:"
+     echo "         $0 stop"
+     echo ""
 }
 
 
@@ -62,51 +62,52 @@ spyd_docker_help_c ()
 
 spyd_docker_machines_create ()
 {
-        # machines_mpi
-        MODE=$1
-        if [ "$MODE" == "SINGLE_NODE" ]; then
-                CONTAINER_ID_LIST=$(docker ps -f name=node -q)
-                docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID_LIST > machines_mpi
-        fi
-        if [ "$MODE" == "MULTI_NODE" ]; then
-                CONTAINER_ID_LIST=$(docker service ps spyd_docker_node -f desired-state=running -q)
-                docker inspect -f '{{range .NetworksAttachments}}{{.Addresses}}{{end}}' $CONTAINER_ID_LIST | sed "s/^\[//g" | awk 'BEGIN {FS="/"} ; {print $1}' > machines_mpi
+     # machines_mpi
+     MODE=$1
+     if [ "$MODE" == "SINGLE_NODE" ]; then
+          CONTAINER_ID_LIST=$(docker ps -f name=node -q)
+          docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID_LIST > machines_mpi
+     fi
+     if [ "$MODE" == "MULTI_NODE" ]; then
+          CONTAINER_ID_LIST=$(docker service ps spyd_docker_node -f desired-state=running -q)
+          docker inspect -f '{{range .NetworksAttachments}}{{.Addresses}}{{end}}' $CONTAINER_ID_LIST | sed "s/^\[//g" | awk 'BEGIN {FS="/"} ; {print $1}' > machines_mpi
+     fi
 
-        fi
+     # machines_mpi -> machines_hosts + etc_hosts
+     echo -n "" > machines_hosts
+     echo -n "" > etc_hosts
+     I=1
+     while IFS= read -r line
+     do
+       echo       "node$I"        >> machines_hosts
+       echo "$line node$I nodo$I" >> etc_hosts
+       I=$((I+1))
+     done < machines_mpi
 
-        # machines_mpi -> machines_hosts + etc_hosts
-        echo -n "" > machines_hosts
-        echo -n "" > etc_hosts
-        I=1
-        while IFS= read -r line
-        do
-          echo       "node$I"        >> machines_hosts
-          echo "$line node$I nodo$I" >> etc_hosts
-          I=$((I+1))
-        done < machines_mpi
+     # machines_mpi -> machines_horovod
+     cat machines_mpi | sed 's/.*/& slots=1/g' > machines_horovod
 
-        # machines_mpi -> machines_horovod
-        cat machines_mpi | sed 's/.*/& slots=1/g' > machines_horovod
+     # directories
+     mkdir -p export/nfs
+     mkdir -p work
 
-        # directories
-        mkdir -p export/nfs
-
-        # session mode
-        echo $MODE > .spyd_docker_worksession
+     # session mode
+     echo $MODE > .spyd_docker_worksession
 }
 
 spyd_docker_machines_remove ()
 {
-        rm -fr machines_mpi
-        rm -fr machines_hosts
-        rm -fr etc_hosts
-        rm -fr machines_horovod
+     rm -fr machines_mpi
+     rm -fr machines_hosts
+     rm -fr etc_hosts
+     rm -fr machines_horovod
 
-        # directories
-        rmdir -fail-on-non-empty export/nfs/* >& /dev/null
+     # directories
+     rmdir -fail-on-non-empty         export/nfs/* >& /dev/null
+     rmdir --ignore-fail-on-non-empty export/nfs   >& /dev/null
 
-        # Remove session file...
-        rm -fr .spyd_docker_worksession
+     # Remove session file...
+     rm -fr .spyd_docker_worksession
 }
 
 
@@ -116,77 +117,77 @@ spyd_docker_machines_remove ()
 
 spyd_docker_swarm_create ()
 {
-        # Check params
-        if [ -f .spyd_docker_swarm ]; then
-            echo ": The .spyd_docker_swarm file is found."
-            echo ": * Please swarm-destroy first."
-            echo ": * Please see './spyd_docker.sh help' for more information."
-            echo ""
-            exit
-        fi
+     # Check params
+     if [ -f .spyd_docker_swarm ]; then
+         echo ": The .spyd_docker_swarm file is found."
+         echo ": * Please swarm-destroy first."
+         echo ": * Please see './spyd_docker.sh help' for more information."
+         echo ""
+         exit
+     fi
 
-        # get machinefile name
-        MACHINE_FILE=$1
-        if [ "$MACHINE_FILE" == "" ]; then
-            echo ": The machinefile name is empty."
-            echo ": * Please see './spyd_docker.sh help' for more information."
-            echo ""
-            exit
-        fi
-        if [ ! -f $MACHINE_FILE ]; then
-            echo ": The machinefile '$MACHINE_FILE' does not exist."
-            echo ": * Please see './spyd_docker.sh help' for more information."
-            echo ""
-            exit
-        fi
+     # get machinefile name
+     MACHINE_FILE=$1
+     if [ "$MACHINE_FILE" == "" ]; then
+         echo ": The machinefile name is empty."
+         echo ": * Please see './spyd_docker.sh help' for more information."
+         echo ""
+         exit
+     fi
+     if [ ! -f $MACHINE_FILE ]; then
+         echo ": The machinefile '$MACHINE_FILE' does not exist."
+         echo ": * Please see './spyd_docker.sh help' for more information."
+         echo ""
+         exit
+     fi
 
-        NL=$(cat $MACHINE_FILE | grep -v ^$ | wc -l | cut -f1 -d" ")
-        NWORKERS=$((NL-1))
+     NL=$(cat $MACHINE_FILE | grep -v ^$ | wc -l | cut -f1 -d" ")
+     NWORKERS=$((NL-1))
 
-        head -n 1         $MACHINE_FILE > /tmp/machinefile_1
-        tail -n $NWORKERS $MACHINE_FILE > /tmp/machinefile_2
-        HEAD_NODE=$(cat /tmp/machinefile_1)
+     head -n 1         $MACHINE_FILE > /tmp/machinefile_1
+     tail -n $NWORKERS $MACHINE_FILE > /tmp/machinefile_2
+     HEAD_NODE=$(cat /tmp/machinefile_1)
 
-        # swarm_join
-        ssh $HEAD_NODE 'docker swarm init --advertise-addr $(hostname -i) | grep "docker swarm join --token"' > /tmp/docker_swarm_join.sh
+     # swarm_join
+     ssh $HEAD_NODE 'docker swarm init --advertise-addr $(hostname -i) | grep "docker swarm join --token"' > /tmp/docker_swarm_join.sh
 
-        while IFS= read -r host
-        do
-           ssh ${host} 'bash -s' < /tmp/docker_swarm_join.sh
-        done < /tmp/machinefile_2
+     while IFS= read -r host
+     do
+        ssh ${host} 'bash -s' < /tmp/docker_swarm_join.sh
+     done < /tmp/machinefile_2
 
-        ssh $HEAD_NODE "docker node ls"
+     ssh $HEAD_NODE "docker node ls"
 
-        # swarm mode
-        echo "$HEAD_NODE" > .spyd_docker_swarm
+     # swarm mode
+     echo "$HEAD_NODE" > .spyd_docker_swarm
 }
 
 spyd_docker_swarm_destroy ()
 {
-        # Check params
-        if [ ! -f .spyd_docker_swarm ]; then
-            echo ": The .spyd_docker_swarm file is not found."
-            echo ": * Please swarm-create first."
-            echo ": * Please see './spyd_docker.sh help' for more information."
-            echo ""
-            exit
-        fi
+     # Check params
+     if [ ! -f .spyd_docker_swarm ]; then
+         echo ": The .spyd_docker_swarm file is not found."
+         echo ": * Please swarm-create first."
+         echo ": * Please see './spyd_docker.sh help' for more information."
+         echo ""
+         exit
+     fi
 
-        # get head node
-        HEAD_NODE=$(cat .spyd_docker_swarm)
+     # get head node
+     HEAD_NODE=$(cat .spyd_docker_swarm)
 
-        # swarm_leave
-        echo "docker swarm leave" > /tmp/docker_swarm_leave.sh
+     # swarm_leave
+     echo "docker swarm leave" > /tmp/docker_swarm_leave.sh
 
-        while IFS= read -r host
-        do
-           ssh ${host} 'bash -s' < /tmp/docker_swarm_leave.sh
-        done < /tmp/machinefile_2
+     while IFS= read -r host
+     do
+        ssh ${host} 'bash -s' < /tmp/docker_swarm_leave.sh
+     done < /tmp/machinefile_2
 
-        ssh $HEAD_NODE docker swarm leave --force
+     ssh $HEAD_NODE docker swarm leave --force
 
-        # swarm mode
-        rm -fr .spyd_docker_swarm
+     # swarm mode
+     rm -fr .spyd_docker_swarm
 }
 
 
@@ -196,206 +197,206 @@ spyd_docker_swarm_destroy ()
 
 spyd_docker_build ()
 {
-        # Check params
-        if [ ! -f docker/dockerfile ]; then
-            echo ": The docker/dockerfile file is not found."
-            echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
-            echo ""
-            exit
-        fi
+     # Check params
+     if [ ! -f docker/dockerfile ]; then
+         echo ": The docker/dockerfile file is not found."
+         echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
+         echo ""
+         exit
+     fi
 
-        # Build image
-        HOST_UID=$1
-        HOST_GID=$2
-        CACHE=$3
+     # Build image
+     HOST_UID=$1
+     HOST_GID=$2
+     CACHE=$3
 
-        docker image build ${CACHE} -t uc3m_spyd --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
+     docker image build ${CACHE} -t uc3m_spyd --build-arg UID=$HOST_UID --build-arg GID=$HOST_GID -f docker/dockerfile .
 }
 
 spyd_docker_save ()
 {
-   echo "Saving uc3m_spyd image..."
-   docker image save uc3m_spyd | gzip -5 > spyd_docker.tgz 
+     echo "Saving uc3m_spyd image..."
+     docker image save uc3m_spyd | gzip -5 > spyd_docker.tgz
 }
 
 spyd_docker_load ()
 {
-   # Check params
-   if [ ! -f spyd_docker.tgz ]; then
-      echo ": The spyd_docker.tgz file is not found."
-      echo ": * Please see ./spyd_docker.sh help for more information."
-      echo ""
-      exit
-   fi
+     # Check params
+     if [ ! -f spyd_docker.tgz ]; then
+        echo ": The spyd_docker.tgz file is not found."
+        echo ": * Please see ./spyd_docker.sh help for more information."
+        echo ""
+        exit
+     fi
 
-   echo "Loading uc3m_spyd image..."
-   cat spyd_docker.tgz | gunzip - | docker image load
+     echo "Loading uc3m_spyd image..."
+     cat spyd_docker.tgz | gunzip - | docker image load
 }
 
 spyd_docker_pull ()
 {
-   echo "Pulling uc3m_spyd image..."
-   docker pull uc3m_spyd
+     echo "Pulling uc3m_spyd image..."
+     docker pull uc3m_spyd
 }
 
 spyd_docker_start ()
 {
-        # get uid/gid
-        HOST_UID_VALUE=$(id -u)
-        HOST_GID_VALUE=$(id -g)
-        N_ELTOS=$1
+     # get uid/gid
+     HOST_UID_VALUE=$(id -u)
+     HOST_GID_VALUE=$(id -g)
+     N_ELTOS=$1
 
-        # Check params
-        if [ -f .spyd_docker_worksession ]; then
-            echo ": There is an already running spyd_docker container."
-            echo ": * Please stop first."
-            echo ": * Please see './spyd_docker.sh help' for more information."
-            echo ""
-            exit
-        fi
+     # Check params
+     if [ -f .spyd_docker_worksession ]; then
+         echo ": There is an already running spyd_docker container."
+         echo ": * Please stop first."
+         echo ": * Please see './spyd_docker.sh help' for more information."
+         echo ""
+         exit
+     fi
 
-        # Check swarm active -> multi-node
-        MODE=SINGLE_NODE
-        if [ -f .spyd_docker_swarm ]; then
-            MODE=MULTI_NODE
-        fi
+     # Check swarm active -> multi-node
+     MODE=SINGLE_NODE
+     if [ -f .spyd_docker_swarm ]; then
+         MODE=MULTI_NODE
+     fi
 
-        # single/multi
-        if [ "$MODE" == "SINGLE_NODE" ]; then
+     # single/multi
+     if [ "$MODE" == "SINGLE_NODE" ]; then
 
-                # Start container cluster (single node)
-                echo "Building containers..."
-                HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME up -d --scale node=$N_ELTOS
-                if [ $? -gt 0 ]; then
-                    echo ": The docker compose command failed to spin up containers."
-                    echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
-                    echo ""
-                    exit
-                fi
+             # Start container cluster (single node)
+             echo "Building containers..."
+             HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME up -d --scale node=$N_ELTOS
+             if [ $? -gt 0 ]; then
+                 echo ": The docker compose command failed to spin up containers."
+                 echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
+                 echo ""
+                 exit
+             fi
 
-                # Containers machine file
-                spyd_docker_machines_create "SINGLE_NODE"
+             # Containers machine file
+             spyd_docker_machines_create "SINGLE_NODE"
 
-                # Update /etc/hosts on each node
-                CONTAINER_ID_LIST=$(docker ps -f name=docker -q)
-                for C in $CONTAINER_ID_LIST; do
-                    docker container exec -it $C  /shared/docker/base-srv/hosts_update.sh
-                done
+             # Update /etc/hosts on each node
+             CONTAINER_ID_LIST=$(docker ps -f name=docker -q)
+             for C in $CONTAINER_ID_LIST; do
+                 docker container exec -it $C  /shared/docker/base-srv/hosts_update.sh
+             done
 
-        fi
-        if [ "$MODE" == "MULTI_NODE" ]; then
+     fi
+     if [ "$MODE" == "MULTI_NODE" ]; then
 
-                # Start container cluster (multi node)
-                HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker stack deploy --compose-file docker/dockerstack.yml $DOCKER_PREFIX_NAME
-                if [ $? -gt 0 ]; then
-                    echo ": The docker stack deploy command failed to spin up containers."
-                    echo ""
-                    exit
-                fi
+             # Start container cluster (multi node)
+             HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker stack deploy --compose-file docker/dockerstack.yml $DOCKER_PREFIX_NAME
+             if [ $? -gt 0 ]; then
+                 echo ": The docker stack deploy command failed to spin up containers."
+                 echo ""
+                 exit
+             fi
 
-                docker service scale spyd_docker_node=$N_ELTOS
-                if [ $? -gt 0 ]; then
-                    echo ": The docker service scale command failed to spin up containers."
-                    echo ""
-                    exit
-                fi
+             docker service scale spyd_docker_node=$N_ELTOS
+             if [ $? -gt 0 ]; then
+                 echo ": The docker service scale command failed to spin up containers."
+                 echo ""
+                 exit
+             fi
 
-                # Containers machine file
-                spyd_docker_machines_create "MULTI_NODE"
-        fi
+             # Containers machine file
+             spyd_docker_machines_create "MULTI_NODE"
+     fi
 }
 
 spyd_docker_stop ()
 {
-        # get uid/gid
-        HOST_UID_VALUE=$(id -u)
-        HOST_GID_VALUE=$(id -g)
+     # get uid/gid
+     HOST_UID_VALUE=$(id -u)
+     HOST_GID_VALUE=$(id -g)
 
-        # get current session mode
-        MODE=""
-        if [ -f .spyd_docker_worksession ]; then
-             MODE=$(cat .spyd_docker_worksession)
-        fi
+     # get current session mode
+     MODE=""
+     if [ -f .spyd_docker_worksession ]; then
+          MODE=$(cat .spyd_docker_worksession)
+     fi
 
-        # Check swarm active -> multi-node
-        echo "Stopping containers..."
-        if [ "$MODE" == "SINGLE_NODE" ]; then
+     # Check swarm active -> multi-node
+     echo "Stopping containers..."
+     if [ "$MODE" == "SINGLE_NODE" ]; then
 
-             HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME down
-             if [ $? -gt 0 ]; then
-                 echo ": The 'docker compose' command failed to stop containers."
-                 echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
-                 echo ""
-                 exit
-             fi
+          HOST_UID=$HOST_UID_VALUE HOST_GID=$HOST_GID_VALUE docker compose -f docker/dockercompose.yml -p $DOCKER_PREFIX_NAME down
+          if [ $? -gt 0 ]; then
+              echo ": The 'docker compose' command failed to stop containers."
+              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
+              echo ""
+              exit
+          fi
 
-        fi
-        if [ "$MODE" == "MULTI_NODE" ]; then
+     fi
+     if [ "$MODE" == "MULTI_NODE" ]; then
 
-             docker service rm spyd_docker_node
-             if [ $? -gt 0 ]; then
-                 echo ": The 'docker service' command failed to stop containers."
-                 echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
-                 echo ""
-                 exit
-             fi
+          docker service rm spyd_docker_node
+          if [ $? -gt 0 ]; then
+              echo ": The 'docker service' command failed to stop containers."
+              echo ": * Did you execute git clone https://github.com/acaldero/uc3m_spyd.git ?."
+              echo ""
+              exit
+          fi
 
-        fi
+     fi
 
-        # Remove container cluster files...
-        spyd_docker_machines_remove
+     # Remove container cluster files...
+     spyd_docker_machines_remove
 }
 
 spyd_docker_bash ()
 {
-        # Get parameters
-        CO_ID=$1
-        CO_NC=$2
+     # Get parameters
+     CO_ID=$1
+     CO_NC=$2
 
-        # Check params
-        if [ $CO_ID -lt 1 ]; then
-                echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
-                shift
-                continue
-        fi
-        if [ $CO_ID -gt $CO_NC ]; then
-                echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
-                shift
-                continue
-        fi
+     # Check params
+     if [ $CO_ID -lt 1 ]; then
+             echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
+             shift
+             exit
+     fi
+     if [ $CO_ID -gt $CO_NC ]; then
+             echo "ERROR: Container ID $CO_ID out of range (1...$CO_NC)"
+             shift
+             exit
+     fi
 
-        # get current session mode
-        MODE=""
-        if [ -f .spyd_docker_worksession ]; then
-             MODE=$(cat .spyd_docker_worksession)
-        fi
+     # get current session mode
+     MODE=""
+     if [ -f .spyd_docker_worksession ]; then
+          MODE=$(cat .spyd_docker_worksession)
+     fi
 
-        # get current session mode
-        if [ "$MODE" == "SINGLE_NODE" ]; then
+     # get current session mode
+     if [ "$MODE" == "SINGLE_NODE" ]; then
 
-             # Bash on container...
-             CO_NAME=$(docker ps -f name=$DOCKER_PREFIX_NAME -q | head -$CO_ID | tail -1)
-             echo "Executing /bin/bash on container $CO_NAME with container id: $CO_ID ..."
-             docker exec -it --user lab $CO_NAME /bin/bash -l
+          # Bash on container...
+          CO_NAME=$(docker ps -f name=$DOCKER_PREFIX_NAME -q | head -$CO_ID | tail -1)
+          echo "Executing /bin/bash on container $CO_NAME with container id: $CO_ID ..."
+          docker exec -it --user lab $CO_NAME /bin/bash -l
 
-        fi
-        if [ "$MODE" == "MULTI_NODE" ]; then
+     fi
+     if [ "$MODE" == "MULTI_NODE" ]; then
 
-             # ssh to container...
-             CO_IP=$(head -$1 machines_mpi | tail -1)
-             CO_NAME=$(docker ps -f name=$DOCKER_PREFIX_NAME -q | head -1)
-             if [ "x$CO_NAME" == "x" ]; then
-                  echo ": There is not a running spyd container on this node."
-                  echo ": * Please swarm-create first."
-                  echo ": * Please see ./spyd_docker.sh help for more information."
-                  echo ""
-                  exit
-             fi
+          # ssh to container...
+          CO_IP=$(head -$1 machines_mpi | tail -1)
+          CO_NAME=$(docker ps -f name=$DOCKER_PREFIX_NAME -q | head -1)
+          if [ "x$CO_NAME" == "x" ]; then
+               echo ": There is not a running spyd container on this node."
+               echo ": * Please swarm-create first."
+               echo ": * Please see ./spyd_docker.sh help for more information."
+               echo ""
+               exit
+          fi
 
-             echo "Executing /bin/bash on container $CO_NAME ..."
-             docker container exec -it --user lab $CO_NAME /usr/bin/ssh $CO_IP
+          echo "Executing /bin/bash on container $CO_NAME ..."
+          docker container exec -it --user lab $CO_NAME /usr/bin/ssh $CO_IP
 
-        fi
+     fi
 }
 
 
@@ -405,9 +406,9 @@ spyd_docker_bash ()
 
 # Usage
 if [ $# -eq 0 ]; then
-        spyd_docker_welcome
-        spyd_docker_help_c
-        exit
+     spyd_docker_welcome
+     spyd_docker_help_c
+     exit
 fi
 
 
@@ -461,13 +462,13 @@ do
 
              image-load)
                 echo "Loading image..."
-                
+
                 spyd_docker_load
              ;;
 
              image-pull)
                 echo "Pulling image..."
-                
+
                 spyd_docker_pull
              ;;
 
@@ -532,7 +533,7 @@ do
              ;;
 
              cleanup)
-                # Removing everything (warning) 
+                # Removing everything (warning)
                 echo "Removing containers and images..."
                 docker rm      -f $(docker ps     -a -q)
                 docker rmi     -f $(docker images -a -q)
