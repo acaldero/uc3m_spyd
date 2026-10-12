@@ -367,14 +367,16 @@ Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en al
   {
     long long i;
     double PI = 0.0, result = 0.0;
+    double x = 0.0;
 
-    #pragma omp parallel for reduction(+:result)
-    for (i = 0; i < N; i++) {
-        double x = d * i;
-        result += sqrt(4 * (1 - x * x)) * d;
+    #pragma omp parallel for reduction(+:result) schedule(static)
+    for (i = 0; i < N; i++)
+    {
+        x = (i + 0.5) * d;
+        result += 4.0 / (1.0 + x * x);
     }
 
-    PI = 2 * result;
+    PI = d * result;
     printf("PI = %f\n", PI);
 
     return 0;
@@ -425,7 +427,7 @@ Con 13 ceros parece funcionar, pero es posible que haya overflow/underflow en al
 
 * Para compilar hay que usar gcc y mpicc:
   ```bash
-  gcc   -O2 -o pi_omp_1000000000 pi_omp_1000000000.c -lm -fopenmp -lpthread
+  gcc   -O2 -o pi_omp_1000000000 pi_omp_1000000000.c -lm -fopenmp -lpthread -march=native
   mpicc -O2 -o pi_mpi_1000000000 pi_mpi_1000000000.c -lm
   ```
 
