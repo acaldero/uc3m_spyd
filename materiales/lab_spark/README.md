@@ -37,25 +37,25 @@
 
 * Tras ejecutar pyspark como se ha indicado anteriormente, la salida debería ser parecida a:
   ```
-  Python 3.12.3 (main, Jun 18 2025, 17:59:45) [GCC 13.3.0] on linux
+  Python 3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0] on linux
   Type "help", "copyright", "credits" or "license" for more information.
   WARNING: Using incubator modules: jdk.incubator.vector
   Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
   Setting default log level to "WARN".
   To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-  25/07/13 10:26:34 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+  26/10/12 18:45:20 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
   Welcome to
         ____              __
        / __/__  ___ _____/ /__
       _\ \/ _ \/ _ `/ __/  '_/
-     /__ / .__/\_,_/_/ /_/\_\   version 4.0.1
+     /__ / .__/\_,_/_/ /_/\_\   version 4.2.0
         /_/
 
-  Using Python version 3.12.3 (main, Jun 18 2025 17:59:45)
-  Spark context Web UI available at http://55c02d4925b5:4040
-  Spark context available as 'sc' (master = local[2], app id = local-1755080795247).
+  Using Python version 3.12.3 (main, Aug 31 2026 10:18:26)
+  Spark context Web UI available at http://master:4040
+  Spark context available as 'sc' (master = local[2], app id = local-1791830720801).
   SparkSession available as 'spark'.
-  >>>
+  >>> 
   ```
 
 * Cuando tengamos que terminar la sesión de trabajo de Apache Spark deberemos ejecutar:
@@ -108,11 +108,10 @@
   ...    return 1 if x ** 2 + y ** 2 < 1 else 0
   ...
   >>> spark = SparkSession.builder.appName("PythonPi").getOrCreate()
-  25/07/13 10:28:40 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
+  26/10/12 18:48:00 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
   >>> count = spark.sparkContext.parallelize(range(1, n + 1), partitions).map(f).reduce(add)
-
   >>> print("Pi is roughly %f" % (4.0 * count / n))
-  Pi is roughly 3.141240
+  Pi is roughly 3.145440
   >>> spark.stop()
   >>>
   ```
@@ -164,6 +163,7 @@
   >>> from pyspark.sql import SparkSession
   >>>
   >>> sc = SparkSession.builder.appName("pywc").getOrCreate()
+  26/10/12 18:50:07 WARN SparkSession: Using an existing Spark session; only runtime SQL configurations will take effect.
   >>> lines = sc.read.text("/home/lab/temp/2000-0.txt").rdd.map(lambda r: r[0])
   >>> counts = lines.flatMap(lambda x: x.split(' ')).map(lambda x: (x, 1)).reduceByKey(add)
   >>> output = counts.collect()
@@ -199,24 +199,23 @@
 
 * En la salida de la ejecución de *pyspark* debemos buscar la URL en la que conectarnos:
   ```
-  [I 10:44:44.828 NotebookApp] Writing notebook server cookie secret to /home/lab/.local/share/jupyter/runtime/notebook_cookie_secret
-  [I 10:44:44.920 NotebookApp] Serving notebooks from local directory: /home/lab
-  [I 10:44:44.920 NotebookApp] Jupyter Notebook 6.4.12 is running at:
-  [I 10:44:44.920 NotebookApp] http://55c02d4925b5:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4d
-  [I 10:44:44.920 NotebookApp]  or http://127.0.0.1:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4d
-  [I 10:44:44.920 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-  [C 10:44:44.921 NotebookApp]
+  [I 18:51:16.484 NotebookApp] Serving notebooks from local directory: /home/lab
+  [I 18:51:16.484 NotebookApp] Jupyter Notebook 6.4.12 is running at:
+  [I 18:51:16.484 NotebookApp] http://master:8888/?token=18d946376776a3f4f1456708660176d6b1433b755edf5bd5
+  [I 18:51:16.484 NotebookApp]  or http://127.0.0.1:8888/?token=18d946376776a3f4f1456708660176d6b1433b755edf5bd5
+  [I 18:51:16.484 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+  [C 18:51:16.487 NotebookApp]
 
       To access the notebook, open this file in a browser:
-          file:///home/lab/.local/share/jupyter/runtime/nbserver-2778-open.html
+          file:///home/lab/.local/share/jupyter/runtime/nbserver-50180-open.html
       Or copy and paste one of these URLs:
-          http://master:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
-       or http://127.0.0.1:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
+          http://master:8888/?token=18d946376776a3f4f1456708660176d6b1433b755edf5bd5
+       or http://127.0.0.1:8888/?token=18d946376776a3f4f1456708660176d6b1433b755edf5bd5
   ```
 
 * Para conectarnos debemos usar el nombre de la máquina *master* visible en nuestra red, en nuestro caso hay que cambiar *master* por *ssddX.cloud.lab.inf.uc3m.es*:
   ```
-  http://ssdd0.cloud.lab.inf.uc3m.es:8888/?token=0bc4858e899e6db5f8d6f75cc29b99baa3a9c34c43a00f4e
+  http://ssdd0.cloud.lab.inf.uc3m.es:8888/?token=18d946376776a3f4f1456708660176d6b1433b755edf5bd5
   ```
 
 * Una vez conectados+as estaremos en la página inicial:
@@ -257,8 +256,8 @@
 
 * Si no hay una cuenta compartida en todos los nodos entonces hay que asegurarse que se tiene la misma copia de Spark en todos los nodos mediante:
   ```
-  scp –r spark lab@nodo1:~/
-  scp –r spark lab@nodo2:~/
+  scp -r spark lab@nodo1:~/
+  scp -r spark lab@nodo2:~/
   ```
 
 * En el nodo master hay que arrancar *Spark*:
