@@ -2,7 +2,7 @@
 set -x
 
 ## Install *MPI* software
-sudo aptitude install mpich libmpich-dev
+sudo aptitude install mpich libmpich-dev -y
 
 pushd .
 
