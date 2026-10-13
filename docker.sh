@@ -76,11 +76,18 @@ spyd_docker_machines_create ()
      # machines_mpi -> machines_hosts + etc_hosts
      echo -n "" > machines_hosts
      echo -n "" > etc_hosts
+
      I=1
      while IFS= read -r line
      do
-       echo       "node$I"        >> machines_hosts
-       echo "$line node$I nodo$I" >> etc_hosts
+       if [ "$I" -eq "1" ]; then
+            echo "$line node$I nodo$I master" >> etc_hosts
+       else
+            echo "$line node$I nodo$I"        >> etc_hosts
+       fi
+
+       echo "node$I" >> machines_hosts
+
        I=$((I+1))
      done < machines_mpi
 
