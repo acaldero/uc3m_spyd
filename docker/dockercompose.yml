@@ -11,7 +11,7 @@ services:
       args:
         UID: ${HOST_UID}
         GID: ${HOST_GID}
-    image: spyd-docker
+    image: uc3m_spyd
     volumes:
       - type: bind
         source: ..

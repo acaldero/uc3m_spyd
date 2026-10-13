@@ -27,6 +27,7 @@
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
   ```
+  cd ~/
   ./spark/bin/pyspark  --master local[2]
   ```
   Donde el parámetro de "--master" puede ser:
@@ -69,6 +70,7 @@
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
   ```
+  cd ~/
   ./spark/bin/pyspark  --master local[*]
   ```
 
@@ -137,6 +139,7 @@
 
 * Para trabajar con un shell interactivo en un nodo autónomo hay que ejecutar:
   ```
+  cd ~/
   ./spark/bin/pyspark  --master local[*]
   ```
 
