@@ -238,7 +238,10 @@
 
 * En una nueva celda podemos copiar el ejemplo de contar el número de palabras en remoto (y ejecutarlo):
   ![image](jnb/jnb07-pywc-remote-2.png)
-
+  Se puede ver el contenido ejecutando en una nueva celda el siguiente mandato:
+  ```bash
+  !cat /home/lab/temp/pg2000-w/part-0000*
+  ```
 
 ### Ejemplo: uso de jupyter notebook con cluster
 
